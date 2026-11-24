@@ -2,3 +2,9 @@
 graft/
 .playwright-mcp/
 resources/private/
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+.superpowers/
