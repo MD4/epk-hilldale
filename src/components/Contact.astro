@@ -1,0 +1,84 @@
+---
+import { Image } from 'astro:assets';
+import { logo } from '../lib/assets';
+import type { Content } from '../lib/content';
+
+interface Props {
+  c: Content;
+}
+
+const { shared: s, t } = Astro.props.c;
+const links = [
+  ['Instagram', s.links.instagram],
+  ['Facebook', s.links.facebook],
+  ['Bandcamp', s.links.bandcamp],
+  ['Spotify', s.links.spotify],
+  ['Deezer', s.links.deezer],
+  ['YouTube', s.links.youtube],
+];
+---
+
+<footer id="contact" class="contact wrap">
+  <Image src={logo('hilldale-symbol-white.png')} alt="" width={88} loading="lazy" class="cross" />
+  <div class="booking">
+    <h2 class="label">{t.booking}</h2>
+    <p class="display">{s.booking.name}</p>
+    <p><a class="email" href={`mailto:${s.booking.email}`}>{s.booking.email}</a></p>
+  </div>
+  <ul class="label">
+    {links.map(([name, href]) => <li><a href={href}>{name}</a></li>)}
+  </ul>
+</footer>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 2rem;
+    align-items: start;
+    padding-block: 2.5rem 3rem;
+    background: var(--ink);
+    color: var(--paper);
+    scroll-margin-top: 48px;
+  }
+
+  .contact :global(.cross) {
+    width: 40px;
+  }
+
+  .booking {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .email {
+    font-size: 1.2rem;
+    overflow-wrap: anywhere;
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 0 2rem;
+    font-size: 1.1rem;
+  }
+
+  ul a {
+    display: inline-block;
+    padding-block: 0.6rem;
+  }
+
+  a:hover {
+    color: var(--on-ink-muted);
+  }
+
+  a:focus-visible {
+    outline-color: var(--paper);
+  }
+
+  @media (max-width: 640px) {
+    .contact {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

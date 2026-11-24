@@ -1,0 +1,107 @@
+---
+import { Image } from 'astro:assets';
+import { logo, photo } from '../lib/assets';
+import type { Content } from '../lib/content';
+
+interface Props {
+  c: Content;
+}
+
+const { shared: s, t, lang } = Astro.props.c;
+---
+
+<section id="photos" class="section wrap">
+  <h2 class="display">{t.photosLogos}</h2>
+
+  <ul class="grid">
+    {
+      s.photos.map((p) => (
+        <li data-photo>
+          <Image src={photo(p.file)} alt={p.alt[lang]} widths={[320, 640]} sizes="(min-width: 800px) 25vw, 50vw" loading="lazy" />
+          {p.credit && (
+            <p class="credit" data-field="photo-credit">
+              {t.photoCredit}: {p.credit}
+            </p>
+          )}
+          <a class="btn btn--outline" href={`/downloads/photos/${p.file}`} download>
+            {t.download}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <ul class="grid grid--logos">
+    {
+      s.logos.map((l) => (
+        <li data-logo>
+          <span class:list={['plate', { 'plate--dark': l.file.includes('white') }]}>
+            <Image src={logo(l.file)} alt={l.label[lang]} loading="lazy" />
+          </span>
+          <a class="btn btn--outline" href={`/downloads/logos/${l.file}`} download>
+            {t.download}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    border: var(--rule) solid var(--ink);
+  }
+
+  li :global(img) {
+    width: 100%;
+  }
+
+  [data-photo] :global(img) {
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+  }
+
+  .plate {
+    display: block;
+    height: 9rem;
+    padding: 1.25rem;
+    background: #fff;
+  }
+
+  .plate--dark {
+    background: var(--ink);
+  }
+
+  .plate :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .credit {
+    padding: 0.5rem 0.85rem 0;
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    margin-top: auto;
+    border-width: var(--rule) 0 0;
+    font-size: 0.95rem;
+    padding: 0.6rem;
+  }
+
+  @media (max-width: 800px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+  }
+</style>

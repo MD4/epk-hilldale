@@ -1,0 +1,74 @@
+---
+import type { Content } from '../lib/content';
+
+interface Props {
+  c: Content;
+}
+
+const { t } = Astro.props.c;
+---
+
+<section id="bio" class="section wrap split">
+  <h2 class="display">{t.bio}</h2>
+  <div class="body">
+    <p class="lead" data-bio="short">{t.bioShort}</p>
+    <button type="button" class="btn btn--outline copy" data-copy="short" data-copied-label={t.copied}>{t.copy}</button>
+    <details>
+      <summary class="label">{t.readMore}</summary>
+      <p data-bio="long">{t.bioLong}</p>
+      <button type="button" class="btn btn--outline copy" data-copy="long" data-copied-label={t.copied}>{t.copy}</button>
+    </details>
+  </div>
+</section>
+
+<style>
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    gap: 1.5rem;
+  }
+
+  .split > * + * {
+    margin-top: 0;
+  }
+
+  .body {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    max-width: 44rem;
+  }
+
+  .lead {
+    font-size: 1.3rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  details {
+    display: grid;
+    width: 100%;
+    border-top: var(--rule) solid var(--ink);
+  }
+
+  summary {
+    padding-block: 0.9rem;
+    cursor: pointer;
+  }
+
+  details p {
+    font-size: 1.05rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .copy {
+    font-size: 0.95rem;
+    padding: 0.55rem 0.9rem;
+  }
+
+  @media (max-width: 800px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

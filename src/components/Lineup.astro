@@ -1,0 +1,64 @@
+---
+import type { Content } from '../lib/content';
+import type { Role } from '../content/types';
+
+interface Props {
+  c: Content;
+}
+
+const { shared: s, t } = Astro.props.c;
+const roles: Record<Role, string> = {
+  vocals: t.roleVocals,
+  guitar: t.roleGuitar,
+  bass: t.roleBass,
+  drums: t.roleDrums,
+};
+---
+
+<section id="lineup" class="section wrap">
+  <h2 class="label">{t.lineup}</h2>
+  <ul>
+    {
+      s.members.map((m) => (
+        <li>
+          <span class="display" data-member>{m.name}</span>
+          <span class="label">{roles[m.role]}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  ul {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border: var(--rule) solid var(--ink);
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem 1.25rem;
+    border-right: var(--rule) solid var(--ink);
+  }
+
+  li:last-child {
+    border-right: 0;
+  }
+
+  @media (max-width: 640px) {
+    ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    li:nth-child(2n) {
+      border-right: 0;
+    }
+
+    li:nth-child(-n + 2) {
+      border-bottom: var(--rule) solid var(--ink);
+    }
+  }
+</style>

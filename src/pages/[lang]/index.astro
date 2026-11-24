@@ -1,4 +1,12 @@
 ---
+import Bio from '../../components/Bio.astro';
+import Contact from '../../components/Contact.astro';
+import Gallery from '../../components/Gallery.astro';
+import Header from '../../components/Header.astro';
+import Lineup from '../../components/Lineup.astro';
+import Media from '../../components/Media.astro';
+import Press from '../../components/Press.astro';
+import Technical from '../../components/Technical.astro';
 import TopBar from '../../components/TopBar.astro';
 import Base from '../../layouts/Base.astro';
 import { LANGS, getContent, type Lang } from '../../lib/content';
@@ -11,8 +19,24 @@ const c = getContent(Astro.params.lang as Lang);
 ---
 
 <Base lang={c.lang} title={`HILLDALE · ${c.t.pressKit}`} description={c.t.metaDescription}>
-  <TopBar c={c} />
-  <main>
-    <h1>HILLDALE</h1>
-  </main>
+  <div class="page">
+    <TopBar c={c} />
+    <main>
+      <Header c={c} />
+      <Media c={c} />
+      <Bio c={c} />
+      <Press c={c} />
+      <Lineup c={c} />
+      <Gallery c={c} />
+      <Technical c={c} />
+      <Contact c={c} />
+    </main>
+  </div>
 </Base>
+
+<style>
+  .page {
+    max-width: 1440px;
+    margin-inline: auto;
+  }
+</style>

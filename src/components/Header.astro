@@ -1,0 +1,239 @@
+---
+import { Image, Picture } from 'astro:assets';
+import { logo, photo } from '../lib/assets';
+import { formatDate } from '../lib/format';
+import type { Content } from '../lib/content';
+
+interface Props {
+  c: Content;
+}
+
+const { c } = Astro.props;
+const { shared: s, t, lang } = c;
+const hero = s.photos.find((p) => p.file === s.heroPhoto)!;
+const topQuote = s.press[0];
+---
+
+<header id="top">
+  <div class="hero">
+    <Picture
+      src={photo(hero.file)}
+      alt={hero.alt[lang]}
+      formats={['avif', 'webp']}
+      widths={[480, 800, 1280, 1920]}
+      sizes="(min-width: 1440px) 1440px, 100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-photo"
+    />
+    <h1>
+      <Image src={logo('hilldale-wordmark-white.png')} alt="HILLDALE" loading="eager" class="wordmark" />
+    </h1>
+    <Image src={logo('hilldale-symbol-black.png')} alt="" width={88} loading="eager" class="cross" />
+  </div>
+
+  <div class="facts">
+    <div class="cell cell--tagline">
+      <p class="display">{t.tagline}</p>
+      {
+        s.forFansOf.length > 0 && (
+          <p data-field="fans-of">
+            <span class="label">{t.forFansOf}</span> {s.forFansOf.join(', ')}
+          </p>
+        )
+      }
+    </div>
+
+    <div class="cell cell--release">
+      <p class="label">{t.outNow}</p>
+      <p class="strong">
+        “{s.ep.title}”, EP<br />
+        {formatDate(s.ep.released)}
+      </p>
+      <ul class="platforms">
+        <li><a href={s.links.bandcamp}>Bandcamp</a></li>
+        <li><a href={s.links.spotify}>Spotify</a></li>
+        <li><a href={s.links.deezer}>Deezer</a></li>
+      </ul>
+    </div>
+
+    {
+      topQuote && (
+        <div class="cell cell--press">
+          <p class="label">{t.press}</p>
+          <p class="strong" lang="fr">
+            “{topQuote.quote.fr}”
+          </p>
+          <p>
+            {topQuote.source}, {formatDate(topQuote.date)}
+          </p>
+        </div>
+      )
+    }
+
+    <div class="cell cell--booking">
+      <p class="label">{t.booking}</p>
+      <p class="strong">{s.booking.name}</p>
+      <p><a class="email" href={`mailto:${s.booking.email}`}>{s.booking.email}</a></p>
+      <div class="actions">
+        <a class="btn" href={`mailto:${s.booking.email}`}>{t.bookTheBand}</a>
+        <a class="btn btn--outline" href="/downloads/hilldale-presskit.zip">{t.pressKitZip}</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .hero :global(.hero-photo) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 11;
+    object-fit: cover;
+    object-position: 50% 73%;
+  }
+
+  h1 {
+    font-size: 0;
+  }
+
+  /* The white wordmark inverts whatever sits behind it: black on the sky, white on the concrete. */
+  .hero :global(.wordmark) {
+    position: absolute;
+    top: clamp(20px, 2.8vw, 36px);
+    left: var(--gutter);
+    width: calc(100% - 2 * var(--gutter));
+    mix-blend-mode: difference;
+  }
+
+  .hero :global(.cross) {
+    position: absolute;
+    left: var(--gutter);
+    bottom: var(--gutter);
+    width: clamp(28px, 3.4vw, 44px);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-block: var(--rule-thick) solid var(--ink);
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-width: 0;
+    padding: 1.5rem;
+    border-right: var(--rule) solid var(--ink);
+  }
+
+  .cell:first-child {
+    padding-left: var(--gutter);
+  }
+
+  .cell:last-child {
+    padding-right: var(--gutter);
+    border-right: 0;
+  }
+
+  .platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin-top: auto;
+  }
+
+  .platforms a {
+    display: inline-block;
+    padding-block: 0.6rem;
+  }
+
+  .email {
+    overflow-wrap: anywhere;
+  }
+
+  .actions {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  @media (max-width: 1000px) {
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cell:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .cell:nth-child(-n + 2) {
+      border-bottom: var(--rule) solid var(--ink);
+    }
+
+    .cell:nth-child(2n + 1) {
+      padding-left: var(--gutter);
+    }
+
+    .cell:nth-child(2n) {
+      padding-right: var(--gutter);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero :global(.hero-photo) {
+      aspect-ratio: 39 / 56;
+      object-position: 50% 100%;
+    }
+
+    /* Under the wordmark, whose height is 15.5% of its width. */
+    .hero :global(.cross) {
+      top: calc(20px + (100vw - 2 * var(--gutter)) * 0.155 + 20px);
+      bottom: auto;
+    }
+
+    .facts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cell,
+    .cell:nth-child(n) {
+      padding: 1.25rem var(--gutter);
+      border-right: 0;
+      border-bottom: var(--rule) solid var(--ink);
+    }
+
+    .cell:last-child {
+      border-bottom: 0;
+    }
+
+    /* Tagline and booking first on a phone. */
+    .cell--tagline {
+      order: 1;
+    }
+
+    .cell--booking {
+      order: 2;
+    }
+
+    .cell--release {
+      order: 3;
+    }
+
+    .cell--press {
+      order: 4;
+      border-bottom: 0;
+    }
+
+    .cell--booking:last-child {
+      border-bottom: var(--rule) solid var(--ink);
+    }
+  }
+</style>

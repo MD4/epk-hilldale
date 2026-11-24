@@ -1,0 +1,107 @@
+---
+import { formatDate } from '../lib/format';
+import type { Content } from '../lib/content';
+
+interface Props {
+  c: Content;
+}
+
+const { shared: s, t, lang } = Astro.props.c;
+const shows = s.shows.filter((show) => show.confirmed);
+---
+
+<section id="press" class="section wrap">
+  <h2 class="display">{t.press}</h2>
+  <div class="quotes">
+    {
+      s.press.map((p) => (
+        <figure data-quote>
+          <blockquote lang="fr">“{p.quote.fr}”</blockquote>
+          {lang === 'en' && p.quote.en && <p class="translation">“{p.quote.en}”</p>}
+          <figcaption class="label">
+            {p.url ? <a href={p.url}>{p.source}</a> : p.source}, {formatDate(p.date)}
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+
+  {
+    shows.length > 0 && (
+      <div data-shows>
+        <h3 class="label">{t.shows}</h3>
+        <ul class="shows">
+          {shows.map((show) => (
+            <li>
+              <span class="date">{formatDate(show.date)}</span>
+              <span class="strong">{show.city}</span>
+              <span>{show.venue}</span>
+              <span>{show.with && `${t.showsWith} ${show.with}`}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  figure {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1.25rem;
+    border: var(--rule) solid var(--ink);
+  }
+
+  blockquote {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  figcaption {
+    margin-top: auto;
+  }
+
+  .shows {
+    margin-top: 0.5rem;
+    border-top: var(--rule) solid var(--ink);
+  }
+
+  .shows li {
+    display: grid;
+    grid-template-columns: 7rem repeat(3, minmax(0, 1fr));
+    gap: 0.25rem 1rem;
+    align-items: baseline;
+    padding-block: 0.7rem;
+    border-bottom: var(--rule) solid var(--ink);
+  }
+
+  .date {
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 800px) {
+    .quotes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .shows li {
+      grid-template-columns: 6rem minmax(0, 1fr);
+    }
+
+    .shows li span:nth-child(n + 3) {
+      grid-column: 2;
+    }
+  }
+</style>
