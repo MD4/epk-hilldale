@@ -99,3 +99,21 @@ test('a sitemap lists both languages with their alternates', async ({ request })
   expect(xml).toContain(`<loc>${SITE}/en/</loc>`);
   expect(xml).toContain(`hreflang="x-default" href="${SITE}/en/"`);
 });
+
+test.describe('the root address, shared on its own', () => {
+  test.use({ javaScriptEnabled: false });
+
+  test('carries the full share card, like the language pages', async ({ page, request }) => {
+    await page.goto('/');
+    await expect(page).toHaveTitle(/^HILLDALE · Dark hardcore/);
+    expect((await meta(page, 'description'))!.length).toBeGreaterThan(70);
+    expect(await meta(page, 'og:url')).toBe(`${SITE}/`);
+    expect(await meta(page, 'og:title')).toMatch(/^HILLDALE/);
+    expect(await meta(page, 'og:description')).toBeTruthy();
+    expect(await meta(page, 'og:image')).toBe(`${SITE}/og-image.jpg`);
+    expect(await meta(page, 'og:image:width')).toBe('1200');
+    expect(await meta(page, 'twitter:card')).toBe('summary_large_image');
+    const image = await request.get(local((await meta(page, 'og:image'))!));
+    expect(image.status()).toBe(200);
+  });
+});

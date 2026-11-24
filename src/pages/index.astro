@@ -1,7 +1,14 @@
 ---
 import '../styles/global.css';
 import Favicons from '../components/Favicons.astro';
-import { BASE_PATH, href } from '../lib/paths';
+import ShareMeta from '../components/ShareMeta.astro';
+import { getContent } from '../lib/content';
+import { BASE_PATH, absolute, href } from '../lib/paths';
+
+// This page only sends visitors on to /fr/ or /en/, but it is also the address people share,
+// and link previews read it without following the redirect. So it carries the full share card.
+const { t } = getContent('en');
+const title = `HILLDALE · ${t.tagline} · ${t.pressKit}`;
 ---
 
 <!doctype html>
@@ -9,9 +16,11 @@ import { BASE_PATH, href } from '../lib/paths';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HILLDALE</title>
+    <title>{title}</title>
+    <meta name="description" content={t.metaDescription} />
     <meta name="robots" content="noindex" />
     <Favicons />
+    <ShareMeta lang="en" title={title} description={t.metaDescription} url={absolute('')} />
     <script is:inline define:vars={{ base: BASE_PATH }}>
       // French browsers get the French page, everyone else the English one.
       location.replace(base + (/^fr\b/i.test(navigator.language) ? 'fr/' : 'en/') + location.hash);
