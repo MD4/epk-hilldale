@@ -1,0 +1,261 @@
+---
+import { Image } from 'astro:assets';
+import QRCode from 'qrcode';
+import Print from '../../../layouts/Print.astro';
+import { logo, photo } from '../../../lib/assets';
+import { LANGS, getContent, type Lang } from '../../../lib/content';
+import { formatDate } from '../../../lib/format';
+import type { Role } from '../../../content/types';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const { shared: s, t } = getContent(lang);
+const hero = s.photos.find((p) => p.file === s.heroPhoto)!;
+const quote = s.press[0];
+const shows = s.shows.filter((show) => show.confirmed);
+const roles: Record<Role, string> = { vocals: t.roleVocals, guitar: t.roleGuitar, bass: t.roleBass, drums: t.roleDrums };
+const pageUrl = `${s.SITE.url}/${lang}/`;
+const bare = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+const qr = await QRCode.toString(pageUrl, { type: 'svg', margin: 0 });
+---
+
+<Print lang={lang} title={`HILLDALE · ${t.oneSheet}`}>
+  <div class="onesheet">
+    <div class="bar label">
+      <span>{t.pressKit}</span>
+      <a href={pageUrl}>{bare(pageUrl)}</a>
+    </div>
+
+    <div class="hero">
+      <Image src={photo(hero.file)} alt={hero.alt[lang]} width={1400} format="jpeg" quality={80} loading="eager" class="hero-photo" />
+      <Image src={logo('hilldale-wordmark-white.png')} alt="HILLDALE" loading="eager" class="wordmark" />
+      <Image src={logo('hilldale-symbol-black.png')} alt="" width={88} loading="eager" class="cross" />
+    </div>
+
+    <div class="facts">
+      <div>
+        <h1 class="display">{t.tagline}</h1>
+        {
+          s.forFansOf.length > 0 && (
+            <p data-field="fans-of">
+              <span class="label">{t.forFansOf}</span> {s.forFansOf.join(', ')}
+            </p>
+          )
+        }
+      </div>
+      <div>
+        <p class="label">{t.outNow}</p>
+        <p class="strong">“{s.ep.title}”, EP · {formatDate(s.ep.released)}</p>
+        <p class="label gap">{t.lineup}</p>
+        <p>{s.members.map((m) => `${m.name} (${roles[m.role]})`).join(', ')}</p>
+      </div>
+      <div>
+        <p class="label">{t.booking}</p>
+        <p class="strong">{s.booking.name}</p>
+        <p><a href={`mailto:${s.booking.email}`}>{s.booking.email}</a></p>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="main">
+        <p class="bio">{t.bioShort}</p>
+        {
+          quote && (
+            <figure>
+              <blockquote lang="fr">“{quote.quote.fr}”</blockquote>
+              <figcaption class="label">
+                {quote.source}, {formatDate(quote.date)}
+              </figcaption>
+            </figure>
+          )
+        }
+        {
+          shows.length > 0 && (
+            <div data-shows>
+              <p class="label">{t.shows}</p>
+              <ul>
+                {shows.slice(0, 5).map((show) => (
+                  <li>
+                    {formatDate(show.date)} · {show.city}
+                    {show.venue && `, ${show.venue}`}
+                    {show.with && ` · ${t.showsWith} ${show.with}`}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="side">
+        <p class="label">{t.listenWatch}</p>
+        <ul>
+          <li><a href={s.links.bandcamp}>{bare(s.ep.bandcampUrl)}</a></li>
+          <li><a href={s.links.spotify}>Spotify</a> · <a href={s.links.deezer}>Deezer</a></li>
+          {s.videos.map((v) => <li><a href={`https://youtu.be/${v.id}`}>youtu.be/{v.id}</a> ({v.title})</li>)}
+          <li><a href={s.links.instagram}>{bare(s.links.instagram)}</a></li>
+        </ul>
+        <div class="qr" data-qr>
+          <Fragment set:html={qr} />
+          <p class="label">{bare(pageUrl)}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Print>
+
+<style>
+  .onesheet {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--paper);
+  }
+
+  .label {
+    font-size: 8.5pt;
+  }
+
+  .bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 2.5mm 10mm;
+    background: #000;
+    color: #fff;
+  }
+
+  .bar a {
+    text-decoration: none;
+  }
+
+  .hero {
+    position: relative;
+    height: 122mm;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .hero :global(.hero-photo) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 67%;
+  }
+
+  .hero :global(.wordmark) {
+    position: absolute;
+    top: 7mm;
+    left: 10mm;
+    width: 190mm;
+    mix-blend-mode: difference;
+  }
+
+  .hero :global(.cross) {
+    position: absolute;
+    left: 10mm;
+    bottom: 8mm;
+    width: 8mm;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: 9fr 9fr 10fr;
+    border-block: 1.5mm solid #000;
+  }
+
+  .facts > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2mm;
+    padding: 5mm;
+    border-right: 0.6mm solid #000;
+  }
+
+  .facts > div:first-child {
+    padding-left: 10mm;
+  }
+
+  .facts > div:last-child {
+    padding-right: 10mm;
+    border-right: 0;
+  }
+
+  .display {
+    font-size: 25pt;
+  }
+
+  .strong {
+    font-size: 10.5pt;
+  }
+
+  .gap {
+    margin-top: 2mm;
+  }
+
+  .facts a {
+    overflow-wrap: anywhere;
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+    gap: 8mm;
+    flex: 1;
+    padding: 7mm 10mm 9mm;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 6mm;
+  }
+
+  .bio {
+    font-size: 11.5pt;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  figure {
+    display: grid;
+    gap: 2mm;
+    padding: 4mm;
+    border: 0.6mm solid #000;
+  }
+
+  blockquote {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 17pt;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 2mm;
+  }
+
+  .side li {
+    padding-block: 1.1mm;
+    border-bottom: 0.3mm solid #000;
+    overflow-wrap: anywhere;
+  }
+
+  .qr {
+    display: grid;
+    gap: 1.5mm;
+    width: 30mm;
+    margin-top: auto;
+  }
+
+  .qr :global(svg) {
+    display: block;
+    width: 30mm;
+    height: 30mm;
+  }
+</style>

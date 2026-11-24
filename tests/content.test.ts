@@ -37,3 +37,22 @@ test('otherLang', () => {
   expect(otherLang('fr')).toBe('en');
   expect(otherLang('en')).toBe('fr');
 });
+
+import { getTech } from '../src/content/tech';
+
+test('the patch list has channels 1 to 13 in both languages', () => {
+  for (const l of LANGS) expect(getTech(l).patch.map((p) => p.ch)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+});
+
+test('the stage plot has the same items in both languages', () => {
+  expect(getTech('fr').plot.length).toBe(getTech('en').plot.length);
+  expect(getTech('fr').plot.length).toBeGreaterThan(0);
+});
+
+test('the tech sheet names a contact by email and never by phone', () => {
+  for (const l of LANGS) {
+    const dump = JSON.stringify(getTech(l));
+    expect(dump).not.toMatch(/(\+33|0)[1-9]([ .]?\d{2}){4}/);
+    expect(getTech(l).contact.email).toMatch(/^[^@\s]+@[^@\s]+$/);
+  }
+});

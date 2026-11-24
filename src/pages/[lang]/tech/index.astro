@@ -1,0 +1,176 @@
+---
+import { Image } from 'astro:assets';
+import StagePlot from '../../../components/StagePlot.astro';
+import { getTech } from '../../../content/tech';
+import Print from '../../../layouts/Print.astro';
+import { logo } from '../../../lib/assets';
+import { LANGS, getContent, type Lang } from '../../../lib/content';
+import { formatDate } from '../../../lib/format';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const { shared: s, t } = getContent(lang);
+const tech = getTech(lang);
+const L = tech.labels;
+---
+
+<Print lang={lang} title={`HILLDALE · ${L.title}`}>
+  <div class="tech">
+    <header>
+      <Image src={logo('hilldale-wordmark-black.png')} alt="HILLDALE" width={600} loading="eager" class="wordmark" />
+      <div class="meta">
+        <h1 class="display">{L.title}</h1>
+        <p class="label" data-updated>{tech.version} · {L.updated} {formatDate(tech.updated)}</p>
+      </div>
+    </header>
+
+    <section>
+      <h2 class="label">{L.stagePlot}</h2>
+      <StagePlot tech={tech} />
+    </section>
+
+    <div class="columns">
+      <section>
+        <h2 class="label">{L.patch}</h2>
+        <table data-patch>
+          <thead>
+            <tr><th>{L.channel}</th><th>{L.source}</th><th>{L.mic}</th></tr>
+          </thead>
+          <tbody>
+            {tech.patch.map((p) => <tr><td>{p.ch}</td><td>{p.source}</td><td>{p.mic}</td></tr>)}
+          </tbody>
+        </table>
+      </section>
+
+      <div class="side">
+        <section>
+          <h2 class="label">{L.providedByVenue}</h2>
+          <ul>{tech.providedByVenue.map((item) => <li>{item}</li>)}</ul>
+        </section>
+        <section>
+          <h2 class="label">{L.lights}</h2>
+          <p>{tech.lights}</p>
+        </section>
+        <section>
+          <h2 class="label">{L.party}</h2>
+          <p>{tech.party.join(', ')}</p>
+        </section>
+        <section>
+          <h2 class="label">{L.hospitality}</h2>
+          <p><strong>{L.stage}:</strong> {tech.hospitality.stage}</p>
+          <p><strong>{L.backstage}:</strong> {tech.hospitality.backstage}</p>
+        </section>
+        {
+          s.setLengthMinutes && (
+            <section data-field="set-length">
+              <h2 class="label">{L.setLength}</h2>
+              <p>{s.setLengthMinutes} {t.minutes}</p>
+            </section>
+          )
+        }
+      </div>
+    </div>
+
+    <footer>
+      <p><span class="label">{L.contact}</span> {tech.contact.name} ({tech.contact.role}) · {tech.contact.email}</p>
+      <p><span class="label">{L.booking}</span> {s.booking.name} · {s.booking.email}</p>
+    </footer>
+  </div>
+</Print>
+
+<style>
+  .tech {
+    display: flex;
+    flex-direction: column;
+    gap: 5mm;
+    height: 100%;
+    padding: 12mm;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 4mm;
+    border-bottom: 1.5mm solid #000;
+  }
+
+  header :global(.wordmark) {
+    width: 78mm;
+  }
+
+  .meta {
+    text-align: right;
+  }
+
+  .display {
+    font-size: 22pt;
+  }
+
+  .label {
+    font-size: 8.5pt;
+  }
+
+  h2 {
+    margin-bottom: 1.5mm;
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: minmax(0, 11fr) minmax(0, 8fr);
+    gap: 7mm;
+    flex: 1;
+  }
+
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 4mm;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th,
+  td {
+    padding: 1.3mm 2mm;
+    border: 0.3mm solid #000;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #000;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  td:first-child,
+  th:first-child {
+    width: 9mm;
+    text-align: center;
+  }
+
+  .side ul {
+    list-style: disc;
+    padding-left: 4.5mm;
+  }
+
+  footer {
+    display: grid;
+    gap: 1mm;
+    padding-top: 3mm;
+    border-top: 0.6mm solid #000;
+  }
+
+  footer .label {
+    display: inline-block;
+    min-width: 38mm;
+  }
+</style>

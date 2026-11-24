@@ -1,0 +1,70 @@
+---
+import type { TechSheet } from '../content/tech';
+
+interface Props {
+  tech: TechSheet;
+}
+
+const { tech } = Astro.props;
+const W = 1000;
+const H = 440;
+const px = (x: number) => (x / 100) * W;
+const py = (y: number) => (y / 100) * H;
+---
+
+<svg data-plot viewBox={`0 0 ${W} ${H}`} role="img" aria-label={tech.labels.stagePlot}>
+  <rect x="1" y="1" width={W - 2} height={H - 2} fill="none" stroke="#000" stroke-width="2"></rect>
+  <text x="14" y="26" class="edge">{tech.labels.stageRight}</text>
+  <text x={W / 2} y={H - 10} class="edge" text-anchor="middle">{tech.labels.audience}</text>
+  {
+    tech.plot.map((item) => {
+      const x = px(item.x);
+      const y = py(item.y);
+      return (
+        <g>
+          {item.kind === 'amp' && <rect x={x - 75} y={y - 26} width="150" height="52" fill="#ddd" stroke="#000" stroke-width="2" />}
+          {item.kind === 'drums' && <rect x={x - 130} y={y - 44} width="260" height="88" fill="#fff" stroke="#000" stroke-width="3" />}
+          {item.kind === 'monitor' && <path d={`M${x - 38} ${y - 16}h76l-12 32h-52z`} fill="#fff" stroke="#000" stroke-width="2" />}
+          {item.kind === 'power' && <rect x={x - 52} y={y - 13} width="104" height="26" fill="#fff" stroke="#000" stroke-width="1.5" stroke-dasharray="5 4" />}
+          <text x={x} y={item.note && item.kind !== 'power' && item.kind !== 'monitor' ? y - 2 : y + 5} text-anchor="middle" class={item.kind === 'person' || item.kind === 'drums' ? 'name' : 'small'}>
+            {item.label}
+          </text>
+          {item.note && (
+            <text x={x} y={y + 17} text-anchor="middle" class="small">
+              {item.note}
+            </text>
+          )}
+        </g>
+      );
+    })
+  }
+</svg>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  text {
+    font-family: var(--font-body);
+    fill: #000;
+  }
+
+  .name {
+    font-weight: 600;
+    font-size: 21px;
+  }
+
+  .small {
+    font-size: 14px;
+  }
+
+  .edge {
+    font-size: 14px;
+    font-style: italic;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>

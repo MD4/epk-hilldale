@@ -1,0 +1,64 @@
+---
+import '@fontsource/big-shoulders-display/600';
+import '@fontsource/big-shoulders-display/800';
+import '@fontsource/archivo/400';
+import '@fontsource/archivo/600';
+import '../styles/global.css';
+import type { Lang } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+  title: string;
+}
+
+const { lang, title } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <main class="sheet">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  /* One A4 page. On screen the sheet is shown at its printed size. */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html {
+    background: #777;
+  }
+
+  body {
+    background: none;
+  }
+
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #fff;
+    font-size: 9.5pt;
+    line-height: 1.4;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @media print {
+    html {
+      background: none;
+    }
+  }
+</style>

@@ -8,7 +8,12 @@ const LOGOS = ['symbol-black', 'symbol-white', 'wordmark-black', 'wordmark-white
   (n) => `logos/hilldale-${n}.png`,
 );
 const BIOS = ['bio/hilldale-bio-en.txt', 'bio/hilldale-bio-fr.txt'];
-export const PDFS: string[] = [];
+export const PDFS = [
+  'hilldale-fiche-technique.pdf',
+  'hilldale-onesheet-en.pdf',
+  'hilldale-onesheet-fr.pdf',
+  'hilldale-tech-rider.pdf',
+];
 
 const zipEntries = () =>
   execFileSync('unzip', ['-Z1', ZIP], { encoding: 'utf8' })
