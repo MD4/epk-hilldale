@@ -4,6 +4,7 @@ import '@fontsource/big-shoulders-display/800';
 import '@fontsource/archivo/400';
 import '@fontsource/archivo/600';
 import '../styles/global.css';
+import Favicons from '../components/Favicons.astro';
 import type { Lang } from '../lib/content';
 
 interface Props {
@@ -21,6 +22,7 @@ const { lang, title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="robots" content="noindex" />
+    <Favicons />
   </head>
   <body>
     <main class="sheet">

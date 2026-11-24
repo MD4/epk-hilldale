@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Favicons from '../components/Favicons.astro';
 import { BASE_PATH, href } from '../lib/paths';
 ---
 
@@ -10,6 +11,7 @@ import { BASE_PATH, href } from '../lib/paths';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HILLDALE</title>
     <meta name="robots" content="noindex" />
+    <Favicons />
     <script is:inline define:vars={{ base: BASE_PATH }}>
       // French browsers get the French page, everyone else the English one.
       location.replace(base + (/^fr\b/i.test(navigator.language) ? 'fr/' : 'en/') + location.hash);

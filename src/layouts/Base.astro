@@ -7,7 +7,8 @@ import '../styles/global.css';
 import { getImage } from 'astro:assets';
 import { photo } from '../lib/assets';
 import { LANGS, getContent, type Lang } from '../lib/content';
-import { absolute, href } from '../lib/paths';
+import Favicons from '../components/Favicons.astro';
+import { absolute } from '../lib/paths';
 
 interface Props {
   lang: Lang;
@@ -35,7 +36,7 @@ const urlFor = (l: Lang) => absolute(`${l}/${path}`);
     {!SITE.indexable && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={urlFor(lang)} />
     {LANGS.map((l) => <link rel="alternate" hreflang={l} href={urlFor(l)} />)}
-    <link rel="icon" type="image/svg+xml" href={href('favicon.svg')} />
+    <Favicons />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(preview.src, Astro.site).href} />
