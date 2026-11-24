@@ -4,7 +4,7 @@ import type { Shared } from './types';
 export const shared: Shared = {
   // Set indexable to true to let search engines list the page.
   // The public address itself comes from astro.config.mjs.
-  SITE: { indexable: false },
+  SITE: { indexable: true },
   booking: { name: 'Jojo', email: 'hilldaledowntempo44@gmail.com' },
   links: {
     instagram: 'https://www.instagram.com/hilldale_band/',

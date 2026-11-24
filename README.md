@@ -73,7 +73,7 @@ The workflow asks GitHub where the site is published and builds for that address
 
 ### Search engines
 
-The page is hidden from search engines while `SITE.indexable` is `false` in `src/content/shared.ts`. Set it to `true` to let them list it.
+Search engines may list the page (`SITE.indexable: true` in `src/content/shared.ts`); the downloads folder stays out of their reach. Set it to `false` to hide the page again.
 
 ### Checking a sub-folder build locally
 

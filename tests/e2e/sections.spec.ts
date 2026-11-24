@@ -181,8 +181,11 @@ test('the English header gives the top quote in English, marked as a translation
   await expect(page.locator('#top [data-facts]')).toContainText('translated from French');
 });
 
-test('search engines are told to stay out while the page is unlisted', async ({ request }) => {
-  expect(await (await request.get('/robots.txt')).text()).toMatch(/^Disallow: \/$/m);
+test('search engines may crawl the page but not the downloads, and find the sitemap', async ({ request }) => {
+  const robots = await (await request.get('/robots.txt')).text();
+  expect(robots).toMatch(/^Disallow: \/downloads\/$/m);
+  expect(robots).not.toMatch(/^Disallow: \/$/m);
+  expect(robots).toMatch(/^Sitemap: https:\/\/hilldale\.band\/sitemap\.xml$/m);
 });
 
 test('a wrong address offers both languages', async ({ page }) => {

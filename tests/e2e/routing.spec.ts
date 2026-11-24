@@ -9,9 +9,9 @@ for (const lang of ['fr', 'en'] as const) {
     await expect(page.locator('h1')).toHaveCount(1);
   });
 
-  test(`/${lang}/ is hidden from search engines`, async ({ page }) => {
+  test(`/${lang}/ can be listed by search engines`, async ({ page }) => {
     await page.goto(`/${lang}/`);
-    await expect(page.locator('meta[name=robots]')).toHaveAttribute('content', 'noindex');
+    await expect(page.locator('meta[name=robots]')).toHaveCount(0);
   });
 
   test(`/${lang}/ points to its other language`, async ({ page }) => {
