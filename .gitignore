@@ -1,10 +1,13 @@
-.DS_Store
-graft/
-.playwright-mcp/
-resources/private/
+# Dependencies and build output
 node_modules/
 dist/
 .astro/
+
+# Test output
 test-results/
 playwright-report/
-.superpowers/
+
+# Source files with personal details (phone numbers, original documents). Never published.
+resources/private/
+
+.DS_Store
