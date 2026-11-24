@@ -6,7 +6,7 @@ export default defineConfig({
   reporter: 'line',
   use: { baseURL: 'http://localhost:4321' },
   webServer: {
-    command: 'npx astro build && exec node scripts/serve-dist.mjs 4321',
+    command: 'npm run build && exec node scripts/serve-dist.mjs 4321',
     url: 'http://localhost:4321/fr/',
     reuseExistingServer: false,
     timeout: 120_000,
