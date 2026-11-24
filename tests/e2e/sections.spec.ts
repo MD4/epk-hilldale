@@ -23,12 +23,33 @@ for (const lang of ['fr', 'en'] as const) {
 
     test('the featured clip loads YouTube only when played', async ({ page }) => {
       const listen = page.locator('#listen');
-      await expect(listen.locator('iframe')).toHaveCount(0);
+      await expect(listen.locator('iframe[src*="youtube"]')).toHaveCount(0);
       await listen.locator('[data-yt-embed]').click();
-      await expect(listen.locator('iframe')).toHaveAttribute(
+      await expect(listen.locator('iframe[src*="youtube"]')).toHaveAttribute(
         'src',
         /youtube-nocookie\.com\/embed\/4ll4Ep1TsqI/,
       );
+    });
+
+    test('the EP can be played on the page', async ({ page }) => {
+      const player = page.locator('#listen iframe[src*="bandcamp.com/EmbeddedPlayer/album=2247878127"]');
+      await expect(player).toHaveCount(0);
+      await page.locator('#listen button[data-bandcamp]').click();
+      await expect(player).toHaveCount(1);
+    });
+
+    test('the header facts name the line-up', async ({ page }) => {
+      for (const name of ['Jojo', 'Suli', 'Leo', 'Marty']) {
+        await expect(page.locator('#top [data-facts]')).toContainText(name);
+      }
+    });
+
+    test('no image falls back to a heavy file', async ({ page, request }) => {
+      const sources = await page.locator('img').evaluateAll((imgs) => [...new Set(imgs.map((i) => i.getAttribute('src')!))]);
+      expect(sources.length).toBeGreaterThan(8);
+      for (const src of sources) {
+        expect((await (await request.get(src)).body()).length, src).toBeLessThan(500_000);
+      }
     });
 
     test('press quotes carry their source', async ({ page }) => {

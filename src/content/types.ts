@@ -37,6 +37,7 @@ export interface Strings {
   booking: string;
   listenWatch: string;
   officialVideo: string;
+  playEp: string;
   bio: string;
   readMore: string;
   copy: string;

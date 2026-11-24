@@ -10,8 +10,11 @@ const { shared: s, t, lang } = Astro.props.c;
 const shows = s.shows.filter((show) => show.confirmed);
 ---
 
+{
+  (s.press.length > 0 || shows.length > 0) && (
 <section id="press" class="section wrap">
   <h2 class="display">{t.press}</h2>
+  {s.press.length > 0 && (
   <div class="quotes">
     {
       s.press.map((p) => (
@@ -25,6 +28,7 @@ const shows = s.shows.filter((show) => show.confirmed);
       ))
     }
   </div>
+  )}
 
   {
     shows.length > 0 && (
@@ -35,8 +39,8 @@ const shows = s.shows.filter((show) => show.confirmed);
             <li>
               <span class="date">{formatDate(show.date)}</span>
               <span class="strong">{show.city}</span>
-              <span>{show.venue}</span>
-              <span>{show.with && `${t.showsWith} ${show.with}`}</span>
+              {show.venue && <span>{show.venue}</span>}
+              {show.with && <span>{t.showsWith} {show.with}</span>}
             </li>
           ))}
         </ul>
@@ -44,6 +48,8 @@ const shows = s.shows.filter((show) => show.confirmed);
     )
   }
 </section>
+  )
+}
 
 <style>
   .quotes {

@@ -20,6 +20,7 @@ const topQuote = s.press[0];
       src={photo(hero.file)}
       alt={hero.alt[lang]}
       formats={['avif', 'webp']}
+      width={1280}
       widths={[480, 800, 1280, 1920]}
       sizes="(min-width: 1440px) 1440px, 100vw"
       loading="eager"
@@ -32,7 +33,7 @@ const topQuote = s.press[0];
     <Image src={logo('hilldale-symbol-black.png')} alt="" width={88} loading="eager" class="cross" />
   </div>
 
-  <div class="facts">
+  <div class="facts" data-facts>
     <div class="cell cell--tagline">
       <p class="display">{t.tagline}</p>
       {
@@ -50,6 +51,7 @@ const topQuote = s.press[0];
         “{s.ep.title}”, EP<br />
         {formatDate(s.ep.released)}
       </p>
+      <p>{s.members.map((m) => m.name).join(' · ')}</p>
       <ul class="platforms">
         <li><a href={s.links.bandcamp}>Bandcamp</a></li>
         <li><a href={s.links.spotify}>Spotify</a></li>

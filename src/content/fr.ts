@@ -16,6 +16,7 @@ export const fr: Strings = {
   booking: 'Booking',
   listenWatch: 'Écouter et regarder',
   officialVideo: 'Clip officiel',
+  playEp: 'Écouter l’EP ici',
   bio: 'Bio',
   readMore: 'Lire la version longue',
   copy: 'Copier le texte',

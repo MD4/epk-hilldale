@@ -16,6 +16,7 @@ export const en: Strings = {
   booking: 'Booking',
   listenWatch: 'Listen and watch',
   officialVideo: 'Official video',
+  playEp: 'Play the EP here',
   bio: 'Bio',
   readMore: 'Read the long version',
   copy: 'Copy text',

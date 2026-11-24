@@ -47,3 +47,14 @@ for (const file of [
     expect(statSync(path).size).toBeLessThan(3_000_000);
   });
 }
+
+for (const route of ['/fr/onesheet/', '/en/onesheet/', '/fr/tech/', '/en/tech/']) {
+  test(`${route} fits its page with nothing cut off`, async ({ page }) => {
+    await page.goto(route);
+    await page.evaluate(() => document.fonts.ready);
+    const overflow = await page
+      .locator('.sheet')
+      .evaluate((sheet) => Math.max(sheet.scrollHeight - sheet.clientHeight, ...[...sheet.querySelectorAll('*')].map((el) => el.getBoundingClientRect().bottom - sheet.getBoundingClientRect().bottom)));
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+}

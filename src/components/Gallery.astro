@@ -17,7 +17,7 @@ const { shared: s, t, lang } = Astro.props.c;
     {
       s.photos.map((p) => (
         <li data-photo>
-          <Image src={photo(p.file)} alt={p.alt[lang]} widths={[320, 640]} sizes="(min-width: 800px) 25vw, 50vw" loading="lazy" />
+          <Image src={photo(p.file)} alt={p.alt[lang]} width={640} widths={[320, 640]} sizes="(min-width: 800px) 25vw, 50vw" loading="lazy" />
           {p.credit && (
             <p class="credit" data-field="photo-credit">
               {t.photoCredit}: {p.credit}

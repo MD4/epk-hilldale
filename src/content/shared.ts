@@ -23,6 +23,8 @@ export const shared: Shared = {
     title: 'Hilldale',
     released: '2025-10-31',
     bandcampUrl: 'https://hilldale44.bandcamp.com/album/hilldale',
+    // The number in Bandcamp's embed code for the EP; it puts the player on the page.
+    bandcampAlbumId: '2247878127',
   },
   members: [
     { name: 'Jojo', role: 'vocals' },

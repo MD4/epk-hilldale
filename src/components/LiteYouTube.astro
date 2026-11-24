@@ -21,7 +21,7 @@ const { id, title, photoFile, embed = false, label } = Astro.props;
   data-yt-title={title}
 >
   <span class="frame">
-    <Image src={photo(photoFile)} alt="" widths={[480, 960]} sizes={embed ? '(min-width: 800px) 66vw, 100vw' : '(min-width: 800px) 33vw, 50vw'} />
+    <Image src={photo(photoFile)} alt="" width={960} widths={[480, 960]} sizes={embed ? '(min-width: 800px) 66vw, 100vw' : '(min-width: 800px) 33vw, 50vw'} />
   </span>
   <span class="bar">
     <span>{title}</span>

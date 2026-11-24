@@ -115,6 +115,11 @@ const qr = await QRCode.toString(pageUrl, { type: 'svg', margin: 0 });
     background: var(--paper);
   }
 
+  /* Fixed blocks keep their size, so text that outgrows the page shows up as overflow. */
+  .onesheet > * {
+    flex-shrink: 0;
+  }
+
   .label {
     font-size: 8.5pt;
   }
