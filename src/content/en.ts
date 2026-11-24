@@ -40,7 +40,7 @@ export const en: Strings = {
   setLength: 'Set length',
   minutes: 'minutes',
   contactLinks: 'Contact and links',
-  shows: 'Notable shows',
+  shows: 'Shows',
   showsWith: 'with',
   forFansOf: 'For fans of',
   photoCredit: 'Photo',

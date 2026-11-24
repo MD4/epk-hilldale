@@ -40,7 +40,7 @@ export const fr: Strings = {
   setLength: 'Durée du set',
   minutes: 'minutes',
   contactLinks: 'Contact et liens',
-  shows: 'Concerts marquants',
+  shows: 'Concerts',
   showsWith: 'avec',
   forFansOf: 'Pour les fans de',
   photoCredit: 'Photo',

@@ -62,7 +62,9 @@ for (const lang of ['fr', 'en'] as const) {
 
     test('the bios are final and the confirmed shows are listed', async ({ page }) => {
       await expect(page.locator('#bio')).not.toContainText(/DRAFT|BROUILLON/);
-      await expect(page.locator('#press [data-shows] li')).toHaveCount(4);
+      await expect(page.locator('#press [data-shows] li')).toHaveCount(10);
+      await expect(page.locator('#press [data-shows] li').first()).toContainText('30.01.2027');
+      await expect(page.locator('#press [data-shows]')).toContainText('Coilguns');
       await expect(page.locator('#press [data-shows]')).toContainText('Poum Poum T’chak');
     });
 
@@ -108,10 +110,12 @@ for (const lang of ['fr', 'en'] as const) {
       await expect(page.locator('img[src*="/downloads/"]')).toHaveCount(0);
     });
 
-    test('empty optional content leaves nothing behind', async ({ page }) => {
-      for (const field of ['fans-of', 'set-length', 'photo-credit']) {
-        await expect(page.locator(`[data-field="${field}"]`)).toHaveCount(0);
-      }
+    test('optional content shows when known and leaves nothing behind when not', async ({ page }) => {
+      await expect(page.locator('[data-field="photo-credit"]')).toHaveCount(0);
+      await expect(page.locator('#top [data-field="fans-of"]')).toContainText('Hexis');
+      await expect(page.locator('#technical [data-field="set-length"]')).toContainText('33');
+      await expect(page.locator('#listen [data-field="credits"]')).toContainText('Christophe Hogomat');
+      await expect(page.locator('#listen [data-field="credits"]')).toContainText('Thibault Chaumont');
     });
 
     test('nothing scrolls sideways on a 320 px phone', async ({ page }) => {

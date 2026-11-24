@@ -19,7 +19,8 @@ test('the French one-sheet carries the essentials', async ({ page }) => {
 
 test('the one-sheet leaves out empty optional content', async ({ page }) => {
   await page.goto('/en/onesheet/');
-  await expect(page.locator('[data-field="fans-of"]')).toHaveCount(0);
+  await expect(page.locator('[data-field="fans-of"]')).toContainText('Hexis');
+  await expect(page.locator('[data-shows] li')).toHaveCount(5);
 });
 
 test('the one-sheet lists shows and names itself plainly', async ({ page }) => {
@@ -35,7 +36,7 @@ test('the English tech rider has the patch list, the stage plot and its date', a
   const plot = page.locator('svg[data-plot]');
   for (const name of ['Suli', 'Jojo', 'Leo', 'Marty']) await expect(plot).toContainText(name);
   await expect(page.locator('[data-updated]')).toContainText(/\d{2}\.\d{2}\.\d{4}/);
-  await expect(page.locator('[data-field="set-length"]')).toHaveCount(0);
+  await expect(page.locator('[data-field="set-length"]')).toContainText('33 minutes');
   await expect(page.locator('main')).not.toContainText(/(\+33|0)[1-9]([ .]?\d{2}){4}/);
 });
 

@@ -25,6 +25,11 @@ export const shared: Shared = {
     bandcampUrl: 'https://hilldale44.bandcamp.com/album/hilldale',
     // The number in Bandcamp's embed code for the EP; it puts the player on the page.
     bandcampAlbumId: '2247878127',
+    credits: {
+      mix: 'Christophe Hogomat (Plan A Recording Studio)',
+      master: 'Thibault Chaumont (Deviant Lab)',
+      artwork: 'HILLDALE',
+    },
   },
   members: [
     { name: 'Jojo', role: 'vocals' },
@@ -50,11 +55,12 @@ export const shared: Shared = {
   ],
   // Only shows with confirmed: true appear on the page.
   shows: [
-    // Found on the band's Facebook and Instagram on 2026-11-24. Set confirmed to true once the band agrees.
-    { date: '2027-01-30', city: 'Rennes', venue: 'Uzine', with: 'Path of Delusion, To Khaos Dawn', confirmed: false },
-    { date: '2026-12-10', city: 'Orléans', venue: 'Le Dropkick', with: 'Pyrecult, Massue', confirmed: false },
-    { date: '2026-12-09', city: 'Caen', venue: 'El Camino', with: 'Massue, Pain Society', confirmed: false },
-    { date: '2025-12-12', city: 'Nantes', venue: 'Le Ferrailleur', with: 'Coilguns, Cold Capsule, Griseville', confirmed: false },
+    { date: '2027-01-30', city: 'Rennes', venue: 'Uzine', with: 'Path of Delusion, To Khaos Dawn', confirmed: true },
+    { date: '2026-12-10', city: 'Orléans', venue: 'Le Dropkick', with: 'Pyrecult, Massue', confirmed: true },
+    { date: '2026-12-09', city: 'Caen', venue: 'El Camino', with: 'Massue, Pain Society', confirmed: true },
+    { date: '2026-06-04', city: 'Nantes', venue: 'CAFK', with: 'Griseville', confirmed: true },
+    { date: '2025-12-12', city: 'Nantes', venue: 'Le Ferrailleur', with: 'Coilguns, Cold Capsule, Griseville', confirmed: true },
+    { date: '2025-11-29', city: 'Rennes', venue: 'Ty Anna Tavarn', with: 'Narcotic Wasteland, Recedant Somnia', confirmed: true },
     { date: '2026-10-14', city: 'Limoges', venue: 'Dropkick', with: 'UNSAFE', confirmed: true },
     { date: '2026-10-15', city: 'Toulouse', venue: 'Mécanique des Fluides', with: 'UNSAFE', confirmed: true },
     { date: '2026-10-17', city: 'Peyrestortes', venue: 'El Paseo', with: 'UNSAFE', confirmed: true },
@@ -97,5 +103,7 @@ export const shared: Shared = {
     { file: 'hilldale-symbol-white.png', label: { fr: 'Symbole blanc', en: 'Symbol, white' } },
   ],
   heroPhoto: 'hilldale-promo-12.jpg',
-  forFansOf: [],
+  // Hexis is the comparison made by Breizh Metal; the others are a suggestion for the band to adjust.
+  forFansOf: ['Hexis', 'Celeste', 'Amenra', 'Converge'],
+  setLengthMinutes: 33,
 };

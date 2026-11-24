@@ -44,5 +44,6 @@ test('EP credits appear once they are known', async () => {
   });
   expect(html).toContain('data-field="credits"');
   expect(html).toContain('Mix: Someone Real');
-  expect(await render(Media, c)).not.toContain('data-field="credits"');
+  const without = { ...c, shared: { ...c.shared, ep: { ...c.shared.ep, credits: undefined } } };
+  expect(await render(Media, without)).not.toContain('data-field="credits"');
 });
