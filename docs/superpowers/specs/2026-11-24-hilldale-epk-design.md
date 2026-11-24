@@ -1,6 +1,6 @@
 # HILLDALE EPK: design
 
-Date: 2026-11-24. Status: draft, waiting for approval.
+Date: 2026-11-24. Status: approved by the band on 2026-11-24.
 
 Lines marked **(call)** are choices made by the designer, not decisions the band agreed to. Lines marked **(open)** need an answer from the band.
 
@@ -77,11 +77,19 @@ The band picked **A**, with the one-page PDFs generated from the same content.
 7. **Technical**: tech sheet PDF in FR and EN, set length **(open)**, a three-line summary (4 musicians, backing track for second guitar, own lights), and "Download full press kit (ZIP)".
 8. **Contact and links**: booking contact, Instagram, Facebook, Bandcamp, Spotify, Deezer, YouTube.
 
-### Look (call)
+### Look
 
-- Black background, white text, no colour: the promo photos, the cross symbol and the wordmark carry the identity.
-- A high-contrast serif close to the wordmark for headings, a plain sans for body text.
-- Grain and hard contrast taken from the photos; no stock textures, no gradients.
+Picked by the band on 2026-11-24 from three mockups: take C, "Flyer". Reference mockups (desktop and phone): https://claude.ai/artifact/6KBZdgfsZ6NP9tGM6FPMzi, boards "C · Flyer".
+
+- White paper (`#f2f2ef`) and black ink, like a gig poster. No colour, no gradients.
+- Display type: Big Shoulders Display, weights 600 and 800, uppercase, for the tagline, headings, labels and buttons. Body type: Archivo.
+- The wordmark image runs the full width across the hero photo and inverts against whatever is behind it (`mix-blend-mode: difference` on the white wordmark). The black cross sits small on the photo.
+- Hero photo: the stairs shot under the white sky (`promo-12`), full width.
+- Structure is drawn with rules, not cards: a 6 px black rule above and below the facts block, 2 px rules between columns and around tiles, a black bar at the very top for "Press kit" and the language toggle.
+- Under the hero, a dense four-column facts block: tagline, release and line-up, press quotes, booking with the two buttons. On a phone it stacks, tagline and booking first.
+- Clips are bordered photo tiles with the title in a black bar underneath.
+- Primary buttons are solid black with white uppercase text; secondary buttons are a 2 px black outline.
+- The one-sheet PDF uses the same flyer look. The tech sheet stays plain black on white.
 
 ### Generated files
 
@@ -118,7 +126,7 @@ The tech sheet's source spreadsheet is now in `resources/` with the full text (c
 
 ## Left to the builder
 
-- Exact typefaces, spacing and motion, within the look described above.
+- Exact spacing and motion, within the look described above.
 - Component breakdown and file layout inside the Astro project.
 - Image sizes and formats for the web previews.
 - How the ZIP and PDFs are wired into the build.
