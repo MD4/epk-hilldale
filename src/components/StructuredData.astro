@@ -1,0 +1,59 @@
+---
+// Tells search engines who the band is, in schema.org terms (https://schema.org/MusicGroup).
+import type { Content } from '../lib/content';
+import { absolute } from '../lib/paths';
+import { splitShows, todayIso } from '../lib/shows';
+
+interface Props {
+  c: Content;
+}
+
+const { shared: s, t, lang } = Astro.props.c;
+const roles = { vocals: 'Vocals', guitar: 'Guitar', bass: 'Bass', drums: 'Drums' } as const;
+const { upcoming } = splitShows(s.shows, todayIso());
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicGroup',
+  name: 'HILLDALE',
+  url: absolute(`${lang}/`),
+  description: t.bioShort,
+  genre: s.genres,
+  image: absolute('og-image.jpg'),
+  logo: absolute('downloads/logos/hilldale-wordmark-black.png'),
+  email: s.booking.email,
+  foundingLocation: { '@type': 'Place', name: 'Nantes, France' },
+  sameAs: [s.links.instagram, s.links.facebook, s.links.bandcamp, s.links.spotify, s.links.deezer, s.links.youtube],
+  member: s.members.map((m) => ({
+    '@type': 'OrganizationRole',
+    member: { '@type': 'Person', name: m.name },
+    roleName: roles[m.role],
+  })),
+  album: {
+    '@type': 'MusicAlbum',
+    name: s.ep.title,
+    datePublished: s.ep.released,
+    albumReleaseType: 'https://schema.org/EPRelease',
+    url: s.ep.bandcampUrl,
+  },
+  // Only shows still to come at build time; the deploy runs on every content change.
+  event: upcoming.map((show) => ({
+    '@type': 'MusicEvent',
+    name: ['HILLDALE', show.with].filter(Boolean).join(' + '),
+    startDate: show.date,
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    eventStatus: 'https://schema.org/EventScheduled',
+    location: {
+      '@type': 'Place',
+      name: show.venue ?? show.city,
+      address: { '@type': 'PostalAddress', addressLocality: show.city, addressCountry: 'FR' },
+    },
+    performer: { '@type': 'MusicGroup', name: 'HILLDALE' },
+  })),
+};
+
+// "<" is escaped so no text in the data can close the script tag early.
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" set:html={json} />

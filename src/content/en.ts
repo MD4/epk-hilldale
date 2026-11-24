@@ -3,6 +3,8 @@ import type { Strings } from './types';
 export const en: Strings = {
   metaDescription: 'HILLDALE, dark hardcore from Nantes, France. Press kit: music, videos, bio, photos, tech rider and booking.',
   tagline: 'Dark hardcore from Nantes, France',
+  shareImageAlt: 'HILLDALE, four musicians sitting on stone steps under a white sky, with the band name across the top',
+  ogLocale: 'en_GB',
   bioShort:
     'HILLDALE is a four-piece from Nantes, France, playing dark hardcore laced with post-metal, death and black metal. Their self-titled debut EP came out on 31 October 2025. The band is writing its first full-length, the follow-up to the EP.',
   bioLong:

@@ -105,6 +105,7 @@ export const shared: Shared = {
   ],
   heroPhoto: 'hilldale-promo-12.jpg',
   // Hexis is the comparison made by Breizh Metal; the others are a suggestion for the band to adjust.
+  genres: ['Dark hardcore', 'Blackened hardcore', 'Post-hardcore', 'Metal'],
   forFansOf: ['Hexis', 'Celeste', 'Amenra', 'Converge'],
   setLengthMinutes: 33,
 };

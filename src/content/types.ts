@@ -20,11 +20,15 @@ export interface Shared {
   logos: { file: string; label: Record<Lang, string> }[];
   heroPhoto: string;
   forFansOf: string[];
+  /** Genres for search engines, broadest first. */
+  genres: string[];
   setLengthMinutes?: number;
 }
 
 export interface Strings {
   metaDescription: string;
+  shareImageAlt: string;
+  ogLocale: string;
   tagline: string;
   bioShort: string;
   bioLong: string;

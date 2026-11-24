@@ -3,6 +3,8 @@ import type { Strings } from './types';
 export const fr: Strings = {
   metaDescription: 'HILLDALE, dark hardcore de Nantes. Dossier de presse : musique, clips, bio, photos, fiche technique et booking.',
   tagline: 'Dark hardcore de Nantes',
+  shareImageAlt: 'HILLDALE, quatre musiciens assis sur des marches de pierre sous un ciel blanc, le nom du groupe en haut',
+  ogLocale: 'fr_FR',
   bioShort:
     'HILLDALE est un quatuor nantais qui joue un hardcore sombre, mêlé de post-metal, de death et de black metal. Son premier EP, éponyme, est sorti le 31 octobre 2025. Le groupe écrit son premier album, la suite de cet EP.',
   bioLong:

@@ -7,6 +7,7 @@ import Lineup from '../../components/Lineup.astro';
 import Media from '../../components/Media.astro';
 import Press from '../../components/Press.astro';
 import Technical from '../../components/Technical.astro';
+import StructuredData from '../../components/StructuredData.astro';
 import TopBar from '../../components/TopBar.astro';
 import Base from '../../layouts/Base.astro';
 import { LANGS, getContent, type Lang } from '../../lib/content';
@@ -18,7 +19,8 @@ export function getStaticPaths() {
 const c = getContent(Astro.params.lang as Lang);
 ---
 
-<Base lang={c.lang} title={`HILLDALE · ${c.t.pressKit}`} description={c.t.metaDescription}>
+<Base lang={c.lang} title={`HILLDALE · ${c.t.tagline} · ${c.t.pressKit}`} description={c.t.metaDescription}>
+  <StructuredData c={c} slot="head" />
   <div class="page">
     <TopBar c={c} />
     <main id="main">

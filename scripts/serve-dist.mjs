@@ -21,6 +21,8 @@ const TYPES = {
   '.pdf': 'application/pdf',
   '.zip': 'application/zip',
   '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.webmanifest': 'application/manifest+json',
 };
 
 export function serveDist(port = 4321, root = resolve('dist')) {

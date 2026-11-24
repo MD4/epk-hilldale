@@ -4,9 +4,7 @@ import '@fontsource/big-shoulders-display/800';
 import '@fontsource/archivo/400';
 import '@fontsource/archivo/600';
 import '../styles/global.css';
-import { getImage } from 'astro:assets';
-import { photo } from '../lib/assets';
-import { LANGS, getContent, type Lang } from '../lib/content';
+import { LANGS, getContent, otherLang, type Lang } from '../lib/content';
 import Favicons from '../components/Favicons.astro';
 import { absolute } from '../lib/paths';
 
@@ -21,9 +19,10 @@ interface Props {
 const { lang, title, description, path = '' } = Astro.props;
 const { shared, t } = getContent(lang);
 const { SITE } = shared;
-// The picture shown when the link is pasted into a chat or a social post.
-const preview = await getImage({ src: photo(shared.heroPhoto), width: 1200, format: 'jpeg', quality: 80 });
 const urlFor = (l: Lang) => absolute(`${l}/${path}`);
+// The picture shown when the link is pasted into a chat or a social post (src/pages/og-image.jpg.ts).
+const shareImage = absolute('og-image.jpg');
+const other = getContent(otherLang(lang)).t;
 ---
 
 <!doctype html>
@@ -36,11 +35,29 @@ const urlFor = (l: Lang) => absolute(`${l}/${path}`);
     {!SITE.indexable && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={urlFor(lang)} />
     {LANGS.map((l) => <link rel="alternate" hreflang={l} href={urlFor(l)} />)}
+    <link rel="alternate" hreflang="x-default" href={urlFor('en')} />
     <Favicons />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="HILLDALE" />
+    <meta property="og:url" content={urlFor(lang)} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(preview.src, Astro.site).href} />
+    <meta property="og:locale" content={t.ogLocale} />
+    <meta property="og:locale:alternate" content={other.ogLocale} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.shareImageAlt} />
+
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={shareImage} />
+    <meta name="twitter:image:alt" content={t.shareImageAlt} />
+
+    <slot name="head" />
   </head>
   <body>
     <a class="skip" href="#main">{t.skipLink}</a>
