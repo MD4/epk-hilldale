@@ -57,6 +57,7 @@ The band picked **A**, with the one-page PDFs generated from the same content.
 - One repo, decided by the band. `MD4/epk-hilldale` stays private while the site is built and previewed locally. At launch the repo is made public and GitHub Pages is switched on; the account is on GitHub Free, which serves Pages only from public repos.
 - Once the repo is public, a GitHub Actions workflow deploys on every push to `main` (Actions minutes are free for public repos). No workflow runs while the repo is private: the account's included minutes for private repos were fully used in November 2026 **(call)**.
 - Going public exposes the whole commit history. Before launch, nothing with personal data may exist in any commit: the original tech sheet PDF and spreadsheet (a member's mobile number) and the Word pitch are kept out of the repo, in an ignored `resources/private/` folder **(call)**. The design doc and plan become public too.
+- The first commit was rewritten on 2026-11-24 to remove those files, but GitHub still serves the old commit to anyone who knows its hash. Launch step: publish from a freshly created repo (delete and recreate `MD4/epk-hilldale`, then push), so the public repo has never contained them.
 - PDFs rendered with Playwright from dedicated print routes and committed, so the deploy workflow only has to build the site.
 
 ### URLs and language (call)
