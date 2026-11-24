@@ -188,6 +188,12 @@ test('search engines may crawl the page but not the downloads, and find the site
   expect(robots).toMatch(/^Sitemap: https:\/\/hilldale\.band\/sitemap\.xml$/m);
 });
 
+test('an address from the old sub-folder lands on the right page', async ({ page }) => {
+  await page.goto('/epk-hilldale/en/#press');
+  await expect(page).toHaveURL(/\/en\/#press$/);
+  await expect(page).not.toHaveURL(/epk-hilldale/);
+});
+
 test('a wrong address offers both languages', async ({ page }) => {
   await page.goto('/404.html');
   await expect(page.locator('a[href="/fr/"]')).toBeVisible();

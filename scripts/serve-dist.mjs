@@ -33,7 +33,12 @@ export function serveDist(port = 4321, root = resolve('dist')) {
     let file = join(root, path);
     if (!file.startsWith(root)) return res.writeHead(403).end();
     if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
-    if (!existsSync(file)) return res.writeHead(404).end('Not found');
+    if (!existsSync(file)) {
+      const notFound = join(root, '404.html');
+      if (!existsSync(notFound)) return res.writeHead(404).end('Not found');
+      res.writeHead(404, { 'content-type': TYPES['.html'] });
+      return createReadStream(notFound).pipe(res);
+    }
     res.writeHead(200, {
       'content-type': TYPES[extname(file)] ?? 'application/octet-stream',
       'content-length': statSync(file).size,

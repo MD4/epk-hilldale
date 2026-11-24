@@ -3,7 +3,7 @@ import '@fontsource/big-shoulders-display/800';
 import '@fontsource/archivo/400';
 import '../styles/global.css';
 import Favicons from '../components/Favicons.astro';
-import { href } from '../lib/paths';
+import { BASE_PATH, href } from '../lib/paths';
 ---
 
 <!doctype html>
@@ -14,6 +14,14 @@ import { href } from '../lib/paths';
     <title>HILLDALE · 404</title>
     <meta name="robots" content="noindex" />
     <Favicons />
+    <script is:inline define:vars={{ base: BASE_PATH }}>
+      // The site briefly lived under /epk-hilldale/ on md4.github.io. Addresses picked up then
+      // still carry that folder: send them to the same page at the site's own address.
+      var OLD = '/epk-hilldale/';
+      if (base !== OLD && location.pathname.indexOf(OLD) === 0) {
+        location.replace(base + location.pathname.slice(OLD.length) + location.search + location.hash);
+      }
+    </script>
   </head>
   <body>
     <main class="wrap">
