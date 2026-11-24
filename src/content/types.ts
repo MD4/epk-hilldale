@@ -62,6 +62,8 @@ export interface Strings {
   minutes: string;
   contactLinks: string;
   shows: string;
+  showsUpcoming: string;
+  showsPast: string;
   showsWith: string;
   forFansOf: string;
   photoCredit: string;

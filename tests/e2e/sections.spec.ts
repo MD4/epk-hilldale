@@ -63,7 +63,6 @@ for (const lang of ['fr', 'en'] as const) {
     test('the bios are final and the confirmed shows are listed', async ({ page }) => {
       await expect(page.locator('#bio')).not.toContainText(/DRAFT|BROUILLON/);
       await expect(page.locator('#press [data-shows] li')).toHaveCount(10);
-      await expect(page.locator('#press [data-shows] li').first()).toContainText('30.01.2027');
       await expect(page.locator('#press [data-shows]')).toContainText('Coilguns');
       await expect(page.locator('#press [data-shows]')).toContainText('Poum Poum T’chak');
     });
@@ -137,6 +136,43 @@ for (const lang of ['fr', 'en'] as const) {
     expect(bytes).toBeLessThan(1_500_000);
   });
 }
+
+test.describe('on 9 December 2026', () => {
+  test('shows are labelled upcoming and past from the visitor\'s date', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-12-09T12:00:00'));
+    await page.goto('/en/');
+    const upcoming = page.locator('#press [data-shows-group="upcoming"]');
+    const past = page.locator('#press [data-shows-group="past"]');
+    await expect(upcoming.locator('h4')).toHaveText('Upcoming');
+    await expect(upcoming.locator('li .date')).toHaveText(['09.12.2026', '10.12.2026', '30.01.2027']);
+    await expect(past.locator('h4')).toHaveText('Past');
+    await expect(past.locator('li')).toHaveCount(7);
+    await expect(past.locator('li .date').first()).toHaveText('13.11.2026');
+  });
+});
+
+test('once every show is behind us, the upcoming label disappears', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2027-02-01T12:00:00'));
+  await page.goto('/fr/');
+  await expect(page.locator('#press [data-shows-group="upcoming"]')).toBeHidden();
+  await expect(page.locator('#press [data-shows-group="past"] li')).toHaveCount(10);
+  await expect(page.locator('#press [data-shows-group="past"] h4')).toHaveText('Passés');
+});
+
+test('on a wide screen the page stays a moderate width', async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto('/en/');
+  const hero = await page.locator('#top .hero').boundingBox();
+  expect(hero!.width).toBeLessThanOrEqual(1120);
+  expect(hero!.height).toBeLessThanOrEqual(640);
+  // Centred, with the same margin on both sides.
+  expect(Math.abs(hero!.x - (1920 - hero!.x - hero!.width))).toBeLessThanOrEqual(1);
+});
+
+test('the bio ends on the album sentence the band chose', async ({ page }) => {
+  await page.goto('/en/');
+  await expect(page.locator('[data-bio="short"]')).toContainText('writing its first full-length, the follow-up to the EP');
+});
 
 test('the English header gives the top quote in English, marked as a translation', async ({ page }) => {
   await page.goto('/en/');

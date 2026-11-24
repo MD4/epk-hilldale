@@ -4,9 +4,9 @@ export const fr: Strings = {
   metaDescription: 'HILLDALE, dark hardcore de Nantes. Dossier de presse : musique, clips, bio, photos, fiche technique et booking.',
   tagline: 'Dark hardcore de Nantes',
   bioShort:
-    'HILLDALE est un quatuor nantais qui joue un hardcore sombre, mêlé de post-metal, de death et de black metal. Son premier EP, éponyme, est sorti le 31 octobre 2025. Le groupe écrit actuellement son premier album.',
+    'HILLDALE est un quatuor nantais qui joue un hardcore sombre, mêlé de post-metal, de death et de black metal. Son premier EP, éponyme, est sorti le 31 octobre 2025. Le groupe écrit son premier album, la suite de cet EP.',
   bioLong:
-    'HILLDALE est un quatuor nantais. Son hardcore est sombre, lourd et mélancolique, nourri de post-metal, de death et de black metal : un son grave et compact, des rythmiques écrasantes et un chant qui frappe à chaque phrase. Le premier EP, éponyme, est sorti le 31 octobre 2025, accompagné de trois clips réalisés avec Valentin Clemot (Violent Motion) : Regarde, Agonie et Addictions. Le groupe a tourné en novembre 2025 et terminé l’année en première partie de Coilguns. HILLDALE écrit actuellement son premier album.',
+    'HILLDALE est un quatuor nantais. Son hardcore est sombre, lourd et mélancolique, nourri de post-metal, de death et de black metal : un son grave et compact, des rythmiques écrasantes et un chant qui frappe à chaque phrase. Le premier EP, éponyme, est sorti le 31 octobre 2025, accompagné de trois clips réalisés avec Valentin Clemot (Violent Motion) : Regarde, Agonie et Addictions. Le groupe a tourné en novembre 2025 et terminé l’année en première partie de Coilguns. HILLDALE écrit son premier album, la suite de cet EP.',
   pressKit: 'Dossier de presse',
   bookTheBand: 'Booker le groupe',
   pressKitZip: 'Kit presse (ZIP)',
@@ -41,6 +41,8 @@ export const fr: Strings = {
   minutes: 'minutes',
   contactLinks: 'Contact et liens',
   shows: 'Concerts',
+  showsUpcoming: 'À venir',
+  showsPast: 'Passés',
   showsWith: 'avec',
   forFansOf: 'Pour les fans de',
   photoCredit: 'Photo',

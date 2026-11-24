@@ -4,9 +4,9 @@ export const en: Strings = {
   metaDescription: 'HILLDALE, dark hardcore from Nantes, France. Press kit: music, videos, bio, photos, tech rider and booking.',
   tagline: 'Dark hardcore from Nantes, France',
   bioShort:
-    'HILLDALE is a four-piece from Nantes, France, playing dark hardcore laced with post-metal, death and black metal. Their self-titled debut EP came out on 31 October 2025. The band is now writing its first album.',
+    'HILLDALE is a four-piece from Nantes, France, playing dark hardcore laced with post-metal, death and black metal. Their self-titled debut EP came out on 31 October 2025. The band is writing its first full-length, the follow-up to the EP.',
   bioLong:
-    'HILLDALE is a four-piece from Nantes, France. Their hardcore is dark, heavy and melancholic, pulling from post-metal, death and black metal: a low, compact sound, crushing rhythms and vocals that hit on every line. The self-titled debut EP came out on 31 October 2025, with three videos made with Valentin Clemot (Violent Motion): Regarde, Agonie and Addictions. The band toured in November 2025 and closed the year opening for Coilguns. HILLDALE is now writing its first album.',
+    'HILLDALE is a four-piece from Nantes, France. Their hardcore is dark, heavy and melancholic, pulling from post-metal, death and black metal: a low, compact sound, crushing rhythms and vocals that hit on every line. The self-titled debut EP came out on 31 October 2025, with three videos made with Valentin Clemot (Violent Motion): Regarde, Agonie and Addictions. The band toured in November 2025 and closed the year opening for Coilguns. HILLDALE is writing its first full-length, the follow-up to the EP.',
   pressKit: 'Press kit',
   bookTheBand: 'Book the band',
   pressKitZip: 'Press kit (ZIP)',
@@ -41,6 +41,8 @@ export const en: Strings = {
   minutes: 'minutes',
   contactLinks: 'Contact and links',
   shows: 'Shows',
+  showsUpcoming: 'Upcoming',
+  showsPast: 'Past',
   showsWith: 'with',
   forFansOf: 'For fans of',
   photoCredit: 'Photo',

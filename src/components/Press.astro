@@ -1,14 +1,21 @@
 ---
 import { formatDate } from '../lib/format';
 import type { Content } from '../lib/content';
+import { splitShows, todayIso } from '../lib/shows';
 
 interface Props {
   c: Content;
 }
 
 const { shared: s, t, lang } = Astro.props.c;
-// Most recent first.
-const shows = s.shows.filter((show) => show.confirmed).sort((a, b) => b.date.localeCompare(a.date));
+// Split as of the day the site was built. The script below redoes the split
+// on the visitor's own date, so the labels stay right between two builds.
+const { upcoming, past } = splitShows(s.shows, todayIso());
+const shows = [...upcoming, ...past];
+const groups = [
+  { key: 'upcoming', label: t.showsUpcoming, list: upcoming },
+  { key: 'past', label: t.showsPast, list: past },
+];
 ---
 
 {
@@ -34,17 +41,22 @@ const shows = s.shows.filter((show) => show.confirmed).sort((a, b) => b.date.loc
   {
     shows.length > 0 && (
       <div data-shows>
-        <h3 class="label">{t.shows}</h3>
-        <ul class="shows">
-          {shows.map((show) => (
-            <li>
-              <span class="date">{formatDate(show.date)}</span>
-              <span class="strong">{show.city}</span>
-              {show.venue && <span>{show.venue}</span>}
-              {show.with && <span>{t.showsWith} {show.with}</span>}
-            </li>
-          ))}
-        </ul>
+        <h3 class="display">{t.shows}</h3>
+        {groups.map((group) => (
+          <div class="group" data-shows-group={group.key} hidden={group.list.length === 0}>
+            <h4 class="label">{group.label}</h4>
+            <ul class="shows">
+              {group.list.map((show) => (
+                <li data-date={show.date}>
+                  <span class="date">{formatDate(show.date)}</span>
+                  <span class="strong">{show.city}</span>
+                  {show.venue && <span>{show.venue}</span>}
+                  {show.with && <span>{t.showsWith} {show.with}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     )
   }
@@ -52,7 +64,38 @@ const shows = s.shows.filter((show) => show.confirmed).sort((a, b) => b.date.loc
   )
 }
 
+<script is:inline>
+  // Sort the shows into "upcoming" and "past" using today's date on the visitor's device.
+  document.querySelectorAll('[data-shows]').forEach((root) => {
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const today = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+    const items = [...root.querySelectorAll('li[data-date]')];
+    const byDate = (a, b) => a.dataset.date.localeCompare(b.dataset.date);
+    const lists = {
+      upcoming: items.filter((li) => li.dataset.date >= today).sort(byDate),
+      past: items.filter((li) => li.dataset.date < today).sort(byDate).reverse(),
+    };
+    for (const [key, list] of Object.entries(lists)) {
+      const group = root.querySelector('[data-shows-group="' + key + '"]');
+      group.querySelector('ul').replaceChildren(...list);
+      group.hidden = list.length === 0;
+    }
+  });
+</script>
+
 <style>
+  [data-shows] {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .group {
+    display: grid;
+    gap: 0.5rem;
+  }
+
   .quotes {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -81,7 +124,6 @@ const shows = s.shows.filter((show) => show.confirmed).sort((a, b) => b.date.loc
   }
 
   .shows {
-    margin-top: 0.5rem;
     border-top: var(--rule) solid var(--ink);
   }
 

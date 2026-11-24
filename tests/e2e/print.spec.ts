@@ -21,6 +21,7 @@ test('the one-sheet leaves out empty optional content', async ({ page }) => {
   await page.goto('/en/onesheet/');
   await expect(page.locator('[data-field="fans-of"]')).toContainText('Hexis');
   await expect(page.locator('[data-shows] li')).toHaveCount(5);
+  await expect(page.locator('[data-shows]')).toContainText(/Upcoming|Past/);
 });
 
 test('the one-sheet lists shows and names itself plainly', async ({ page }) => {

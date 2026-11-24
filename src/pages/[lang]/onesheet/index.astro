@@ -5,6 +5,7 @@ import Print from '../../../layouts/Print.astro';
 import { logo, photo } from '../../../lib/assets';
 import { LANGS, getContent, type Lang } from '../../../lib/content';
 import { formatDate } from '../../../lib/format';
+import { splitShows, todayIso } from '../../../lib/shows';
 import type { Role } from '../../../content/types';
 
 export function getStaticPaths() {
@@ -15,7 +16,12 @@ const lang = Astro.params.lang as Lang;
 const { shared: s, t } = getContent(lang);
 const hero = s.photos.find((p) => p.file === s.heroPhoto)!;
 const quote = s.press[0];
-const shows = s.shows.filter((show) => show.confirmed).sort((a, b) => b.date.localeCompare(a.date));
+// Room for five lines: what is coming first, then the most recent past shows.
+const split = splitShows(s.shows, todayIso());
+const shows = [
+  ...split.upcoming.map((show) => ({ ...show, label: t.showsUpcoming })),
+  ...split.past.map((show) => ({ ...show, label: t.showsPast })),
+].slice(0, 5);
 const roles: Record<Role, string> = { vocals: t.roleVocals, guitar: t.roleGuitar, bass: t.roleBass, drums: t.roleDrums };
 const pageUrl = `${s.SITE.url}/${lang}/`;
 const bare = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
@@ -82,8 +88,9 @@ const qr = await QRCode.toString(pageUrl, { type: 'svg', margin: 0 });
             <div data-shows>
               <p class="label">{t.shows}</p>
               <ul>
-                {shows.slice(0, 5).map((show) => (
+                {shows.map((show, i) => (
                   <li>
+                    {show.label !== shows[i - 1]?.label && <strong class="label">{show.label} </strong>}
                     {formatDate(show.date)} · {show.city}
                     {show.venue && `, ${show.venue}`}
                     {show.with && ` · ${t.showsWith} ${show.with}`}
