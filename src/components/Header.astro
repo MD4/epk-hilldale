@@ -98,9 +98,10 @@ const topQuote = s.press[0];
   .hero :global(.hero-photo) {
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 9;
+    /* Framed so the heads sit just under the wordmark and the feet stay in the picture. */
+    aspect-ratio: 32 / 19;
     object-fit: cover;
-    object-position: 50% 72%;
+    object-position: 50% 65%;
   }
 
   h1 {
@@ -125,7 +126,7 @@ const topQuote = s.press[0];
 
   .facts {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.25fr);
     border-block: var(--rule-thick) solid var(--ink);
   }
 
@@ -160,6 +161,7 @@ const topQuote = s.press[0];
   }
 
   .email {
+    font-size: 0.92rem;
     overflow-wrap: anywhere;
   }
 

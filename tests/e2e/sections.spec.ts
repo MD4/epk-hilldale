@@ -164,7 +164,10 @@ test('on a wide screen the page stays a moderate width', async ({ page }) => {
   await page.goto('/en/');
   const hero = await page.locator('#top .hero').boundingBox();
   expect(hero!.width).toBeLessThanOrEqual(1120);
-  expect(hero!.height).toBeLessThanOrEqual(640);
+  expect(hero!.height).toBeLessThanOrEqual(670);
+  // The booking email fits on one line.
+  const email = await page.locator('#top .email').boundingBox();
+  expect(email!.height).toBeLessThan(30);
   // Centred, with the same margin on both sides.
   expect(Math.abs(hero!.x - (1920 - hero!.x - hero!.width))).toBeLessThanOrEqual(1);
 });
