@@ -68,6 +68,8 @@ Search engines may list the page; the `downloads/` folder stays out of their rea
 
 Link previews use `src/pages/og-image.jpg.ts`, a 1200 × 630 picture built from the stairs photo.
 
+Facebook, Messenger and other apps keep a copy of a link's preview. After changing the share image, the title or the description, open Meta's [Sharing Debugger](https://developers.facebook.com/tools/debug/) and click **Scrape again** for `https://hilldale.band/`, `/fr/` and `/en/`. Its "missing fb:app_id" warning can be ignored.
+
 ---
 
 ## Working on it locally
