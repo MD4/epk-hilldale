@@ -1,0 +1,45 @@
+---
+interface Props {
+  /** Which text to copy: the element with the matching data-bio attribute. */
+  target: 'short' | 'long';
+  label: string;
+  copiedLabel: string;
+}
+
+const { target, label, copiedLabel } = Astro.props;
+---
+
+<button type="button" class="btn btn--outline copy" data-copy={target} data-copied-label={copiedLabel} hidden>
+  {label}
+</button>
+
+<script is:inline>
+  // Runs once per button. Buttons stay hidden without JavaScript, since they could do nothing.
+  document.querySelectorAll('button[data-copy]:not([data-ready])').forEach((button) => {
+    button.dataset.ready = '';
+    button.hidden = false;
+    const label = button.textContent;
+    button.addEventListener('click', async () => {
+      const source = document.querySelector('[data-bio="' + button.dataset.copy + '"]');
+      try {
+        await navigator.clipboard.writeText(source.textContent.trim());
+        button.textContent = button.dataset.copiedLabel;
+        setTimeout(() => (button.textContent = label), 2000);
+      } catch {
+        // Clipboard refused: select the text so the visitor can copy it by hand.
+        const range = document.createRange();
+        range.selectNodeContents(source);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    });
+  });
+</script>
+
+<style>
+  .copy {
+    font-size: 0.95rem;
+    padding: 0.55rem 0.9rem;
+  }
+</style>
