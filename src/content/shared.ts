@@ -50,6 +50,11 @@ export const shared: Shared = {
   ],
   // Only shows with confirmed: true appear on the page.
   shows: [
+    // Found on the band's Facebook and Instagram on 2026-11-24. Set confirmed to true once the band agrees.
+    { date: '2027-01-30', city: 'Rennes', venue: 'Uzine', with: 'Path of Delusion, To Khaos Dawn', confirmed: false },
+    { date: '2026-12-10', city: 'Orléans', venue: 'Le Dropkick', with: 'Pyrecult, Massue', confirmed: false },
+    { date: '2026-12-09', city: 'Caen', venue: 'El Camino', with: 'Massue, Pain Society', confirmed: false },
+    { date: '2025-12-12', city: 'Nantes', venue: 'Le Ferrailleur', with: 'Coilguns, Cold Capsule, Griseville', confirmed: false },
     { date: '2026-10-14', city: 'Limoges', venue: 'Dropkick', with: 'UNSAFE', confirmed: true },
     { date: '2026-10-15', city: 'Toulouse', venue: 'Mécanique des Fluides', with: 'UNSAFE', confirmed: true },
     { date: '2026-10-17', city: 'Peyrestortes', venue: 'El Paseo', with: 'UNSAFE', confirmed: true },
