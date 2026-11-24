@@ -78,16 +78,15 @@ You need Node 24 (`nvm use` reads `.nvmrc`).
 
 ```sh
 npm install
-npx playwright install chromium   # once; used by the tests and the PDFs
+npx playwright install chromium   # once; prints the PDFs and runs the browser tests
 
-npm run build                     # build the site into dist/
+npm run build                     # site, PDFs and press kit ZIP, all in dist/
 npm run preview                   # then open http://localhost:4400/
-npm run pdfs                      # regenerate the PDFs in public/downloads/
 npm test                          # content and component tests
 npm run test:e2e                  # browser tests (builds the site first)
 ```
 
-Run `npm run pdfs` and both test commands before pushing a content change, and commit the regenerated PDFs with it.
+Run both test commands before pushing a content change. Nothing generated is committed: the PDFs and the ZIP are rebuilt on every deploy.
 
 ### Project layout
 
@@ -96,8 +95,8 @@ src/content/     everything the band edits (see above)
 src/components/  one file per page section
 src/pages/       the page, the print pages for the PDFs, share image, sitemap, manifest
 resources/       original photos and logos (resources/private/ is ignored)
-public/          icons and the generated PDFs
-scripts/         PDF printing, ZIP and download packaging, link check, icon generation
+public/          icons
+scripts/         build steps (PDF printing, ZIP packing), link check, local server, icon generation
 tests/           unit tests and browser tests (tests/e2e/)
 ```
 

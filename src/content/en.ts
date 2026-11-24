@@ -41,7 +41,6 @@ export const en: Strings = {
   techSummaryLights: 'The band brings and runs its own lights and fog machine.',
   setLength: 'Set length',
   minutes: 'minutes',
-  contactLinks: 'Contact and links',
   shows: 'Shows',
   showsUpcoming: 'Upcoming',
   showsPast: 'Past',

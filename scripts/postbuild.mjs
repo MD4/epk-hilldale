@@ -1,5 +1,5 @@
-// Runs after `astro build`. Publishes the original photos and logos as downloads
-// and assembles the press kit ZIP. Reads only the two folders named below:
+// Last step of `npm run build`. Publishes the original photos and logos as downloads
+// and assembles the press kit ZIP, PDFs included. Reads only the two folders named below:
 // nothing from resources/private can end up in dist/.
 import { createWriteStream, cpSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -27,7 +27,7 @@ const written = new Promise((resolve, reject) => {
 for (const folder of ['photos', 'logos', 'bio']) {
   zip.directory(join(downloads, folder), folder);
 }
-// The generated one-sheets and tech sheets, once `npm run pdfs` has made them.
+// The one-sheets and tech sheets printed by build-pdfs.mjs.
 for (const file of existsSync(downloads) ? readdirSync(downloads) : []) {
   if (file.endsWith('.pdf')) zip.file(join(downloads, file), { name: file });
 }

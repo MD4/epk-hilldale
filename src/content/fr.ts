@@ -41,7 +41,6 @@ export const fr: Strings = {
   techSummaryLights: 'Le groupe apporte et gère ses propres lumières et sa machine à fumée.',
   setLength: 'Durée du set',
   minutes: 'minutes',
-  contactLinks: 'Contact et liens',
   shows: 'Concerts',
   showsUpcoming: 'À venir',
   showsPast: 'Passés',

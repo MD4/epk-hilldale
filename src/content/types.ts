@@ -64,7 +64,6 @@ export interface Strings {
   techSummaryLights: string;
   setLength: string;
   minutes: string;
-  contactLinks: string;
   shows: string;
   showsUpcoming: string;
   showsPast: string;

@@ -6,15 +6,15 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/postbuild.mjs",
+    "build": "astro build && node scripts/build-pdfs.mjs && node scripts/postbuild.mjs",
     "preview": "node scripts/serve-dist.mjs 4400",
     "astro": "astro",
     "test": "vitest run",
-    "test:e2e": "playwright test",
-    "pdfs": "node scripts/build-pdfs.mjs"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
-    "astro": "^7.4.13"
+    "astro": "^7.4.13",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@fontsource/archivo": "^5.3.0",

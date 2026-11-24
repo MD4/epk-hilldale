@@ -48,8 +48,8 @@ for (const file of [
   'hilldale-tech-rider.pdf',
 ]) {
   test(`${file} is a single light page`, async () => {
-    const path = `public/downloads/${file}`;
-    expect(existsSync(path), `${path} is missing: run npm run pdfs`).toBe(true);
+    const path = `dist/downloads/${file}`;
+    expect(existsSync(path), `${path} is missing: npm run build makes it`).toBe(true);
     const pdf = await PDFDocument.load(readFileSync(path));
     expect(pdf.getPageCount()).toBe(1);
     expect(statSync(path).size).toBeLessThan(3_000_000);
