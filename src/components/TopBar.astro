@@ -1,0 +1,75 @@
+---
+import { otherLang, type Content } from '../lib/content';
+
+interface Props {
+  c: Content;
+}
+
+const { c } = Astro.props;
+const other = otherLang(c.lang);
+---
+
+<div class="topbar wrap">
+  <span>{c.t.pressKit}</span>
+  <nav aria-label={c.lang === 'fr' ? 'Langue' : 'Language'}>
+    <span aria-current="true">{c.lang.toUpperCase()}</span>
+    <span aria-hidden="true">/</span>
+    <a href={`/${other}/`} hreflang={other} lang={other} data-lang-toggle aria-label={c.t.otherLangLabel}>
+      {other.toUpperCase()}
+    </a>
+  </nav>
+</div>
+
+<script is:inline>
+  // Keep the visitor on the same section when switching language.
+  document.querySelector('a[data-lang-toggle]')?.addEventListener('click', (event) => {
+    if (!location.hash) return;
+    event.preventDefault();
+    location.href = event.currentTarget.getAttribute('href') + location.hash;
+  });
+</script>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 48px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  nav [aria-current] {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    padding: 0.75rem 0.4rem;
+  }
+
+  nav a {
+    padding: 0.75rem 0.4rem;
+    color: var(--on-ink-muted);
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--paper);
+  }
+
+  nav a:focus-visible {
+    outline-color: var(--paper);
+  }
+</style>

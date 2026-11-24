@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HILLDALE</title>
+    <meta name="robots" content="noindex" />
+    <script is:inline>
+      // French browsers get the French page, everyone else the English one.
+      location.replace((/^fr\b/i.test(navigator.language) ? '/fr/' : '/en/') + location.hash);
+    </script>
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>HILLDALE</h1>
+      <p><a href="/fr/" hreflang="fr" lang="fr">Dossier de presse (français)</a></p>
+      <p><a href="/en/" hreflang="en">Press kit (English)</a></p>
+    </main>
+  </body>
+</html>
+
+<style>
+  main {
+    padding-block: 3rem;
+    display: grid;
+    gap: 1rem;
+  }
+</style>

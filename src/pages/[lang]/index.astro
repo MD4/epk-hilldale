@@ -1,0 +1,18 @@
+---
+import TopBar from '../../components/TopBar.astro';
+import Base from '../../layouts/Base.astro';
+import { LANGS, getContent, type Lang } from '../../lib/content';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const c = getContent(Astro.params.lang as Lang);
+---
+
+<Base lang={c.lang} title={`HILLDALE · ${c.t.pressKit}`} description={c.t.metaDescription}>
+  <TopBar c={c} />
+  <main>
+    <h1>HILLDALE</h1>
+  </main>
+</Base>

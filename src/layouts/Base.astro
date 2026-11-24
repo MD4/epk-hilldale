@@ -1,0 +1,39 @@
+---
+import '@fontsource/big-shoulders-display/600';
+import '@fontsource/big-shoulders-display/800';
+import '@fontsource/archivo/400';
+import '@fontsource/archivo/600';
+import '../styles/global.css';
+import { LANGS, getContent, type Lang } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Path after the language segment, e.g. '' for the EPK page or 'tech/'. */
+  path?: string;
+}
+
+const { lang, title, description, path = '' } = Astro.props;
+const { SITE } = getContent(lang).shared;
+const urlFor = (l: Lang) => `${SITE.url}/${l}/${path}`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {!SITE.indexable && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={urlFor(lang)} />
+    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={urlFor(l)} />)}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
