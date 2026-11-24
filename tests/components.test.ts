@@ -1,5 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { expect, test } from 'vitest';
+import Media from '../src/components/Media.astro';
 import Press from '../src/components/Press.astro';
 import Technical from '../src/components/Technical.astro';
 import { getContent } from '../src/lib/content';
@@ -33,4 +34,15 @@ test('the set length appears once it is known', async () => {
   const html = await render(Technical, withShared({ setLengthMinutes: 35 }));
   expect(html).toContain('data-field="set-length"');
   expect(html).toContain('35 minutes');
+});
+
+test('EP credits appear once they are known', async () => {
+  const c = getContent('en');
+  const html = await render(Media, {
+    ...c,
+    shared: { ...c.shared, ep: { ...c.shared.ep, credits: { mix: 'Someone Real' } } },
+  });
+  expect(html).toContain('data-field="credits"');
+  expect(html).toContain('Mix: Someone Real');
+  expect(await render(Media, c)).not.toContain('data-field="credits"');
 });

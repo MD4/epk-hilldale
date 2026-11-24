@@ -21,7 +21,7 @@ const c = getContent(Astro.params.lang as Lang);
 <Base lang={c.lang} title={`HILLDALE · ${c.t.pressKit}`} description={c.t.metaDescription}>
   <div class="page">
     <TopBar c={c} />
-    <main>
+    <main id="main">
       <Header c={c} />
       <Media c={c} />
       <Bio c={c} />
@@ -29,8 +29,8 @@ const c = getContent(Astro.params.lang as Lang);
       <Lineup c={c} />
       <Gallery c={c} />
       <Technical c={c} />
-      <Contact c={c} />
     </main>
+    <Contact c={c} />
   </div>
 </Base>
 

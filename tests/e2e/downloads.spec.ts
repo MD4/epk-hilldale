@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { readdirSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 
 const ZIP = 'dist/downloads/hilldale-presskit.zip';
@@ -21,16 +21,16 @@ const zipEntries = () =>
     .filter((line) => line && !line.endsWith('/'))
     .sort();
 
-test('every download link on the page works', async ({ page, request }) => {
-  await page.goto('/fr/');
-  const hrefs = await page
-    .locator('a[href^="/downloads/"]')
-    .evaluateAll((links) => [...new Set(links.map((a) => a.getAttribute('href')!))]);
-  expect(hrefs.length).toBeGreaterThanOrEqual(9);
-  for (const href of hrefs.filter((h) => PDFS.length > 0 || !h.endsWith('.pdf'))) {
-    expect((await request.get(href)).status(), href).toBe(200);
-  }
-});
+for (const lang of ['fr', 'en']) {
+  test(`every download link on /${lang}/ works`, async ({ page, request }) => {
+    await page.goto(`/${lang}/`);
+    const hrefs = await page
+      .locator('a[href^="/downloads/"]')
+      .evaluateAll((links) => [...new Set(links.map((a) => a.getAttribute('href')!))]);
+    expect(hrefs.length).toBeGreaterThanOrEqual(11);
+    for (const href of hrefs) expect((await request.get(href)).status(), href).toBe(200);
+  });
+}
 
 test('photo downloads are the untouched originals', async ({ request }) => {
   for (const photo of PHOTOS) {
@@ -48,6 +48,15 @@ test('nothing private is published', () => {
   const published = readdirSync('dist', { recursive: true }).map(String);
   for (const path of [...published, ...zipEntries()]) {
     expect(path.toLowerCase()).not.toContain('private');
+  }
+});
+
+test('no phone number appears in any published text', () => {
+  const PHONE = /(\+33[ .-]?|\b0)[1-9]([ .-]?\d{2}){4}\b/;
+  for (const file of readdirSync('dist', { recursive: true }).map(String)) {
+    if (!/\.(html|txt)$/.test(file)) continue;
+    const text = readFileSync(`dist/${file}`, 'utf8').replace(/<[^>]*>/g, ' ');
+    expect(text.match(PHONE)?.[0], file).toBeUndefined();
   }
 });
 

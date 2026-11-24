@@ -4,6 +4,8 @@ import '@fontsource/big-shoulders-display/800';
 import '@fontsource/archivo/400';
 import '@fontsource/archivo/600';
 import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import { photo } from '../lib/assets';
 import { LANGS, getContent, type Lang } from '../lib/content';
 
 interface Props {
@@ -15,7 +17,10 @@ interface Props {
 }
 
 const { lang, title, description, path = '' } = Astro.props;
-const { SITE } = getContent(lang).shared;
+const { shared, t } = getContent(lang);
+const { SITE } = shared;
+// The picture shown when the link is pasted into a chat or a social post.
+const preview = await getImage({ src: photo(shared.heroPhoto), width: 1200, format: 'jpeg', quality: 80 });
 const urlFor = (l: Lang) => `${SITE.url}/${l}/${path}`;
 ---
 
@@ -32,8 +37,27 @@ const urlFor = (l: Lang) => `${SITE.url}/${l}/${path}`;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={SITE.url + preview.src} />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
+    <a class="skip" href="#main">{t.skipLink}</a>
     <slot />
   </body>
 </html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: -100vw;
+    z-index: 20;
+    padding: 0.75rem 1rem;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .skip:focus {
+    left: 0;
+    top: 0;
+  }
+</style>

@@ -26,7 +26,7 @@ test('every press quote has a source and an ISO date', () => {
 
 test('no phone number anywhere in content', () => {
   const dump = JSON.stringify(LANGS.map(getContent));
-  expect(dump).not.toMatch(/(\+33|0)[1-9]([ .]?\d{2}){4}/);
+  expect(dump).not.toMatch(/(\+33[ .-]?|0)[1-9]([ .-]?\d{2}){4}/);
 });
 
 test('exactly one featured video', () => {
@@ -55,4 +55,13 @@ test('the tech sheet names a contact by email and never by phone', () => {
     expect(dump).not.toMatch(/(\+33|0)[1-9]([ .]?\d{2}){4}/);
     expect(getTech(l).contact.email).toMatch(/^[^@\s]+@[^@\s]+$/);
   }
+});
+
+import { isPublishable } from '../scripts/publishable.mjs';
+
+test('only image files are published from resources', () => {
+  expect(isPublishable('hilldale-promo-01.jpg')).toBe(true);
+  expect(isPublishable('hilldale-symbol-black.png')).toBe(true);
+  expect(isPublishable('.DS_Store')).toBe(false);
+  expect(isPublishable('notes.docx')).toBe(false);
 });

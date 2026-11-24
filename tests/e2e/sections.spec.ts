@@ -11,7 +11,8 @@ for (const lang of ['fr', 'en'] as const) {
 
     test('sections come in the agreed order', async ({ page }) => {
       const ids = await page.locator('main > [id]').evaluateAll((els) => els.map((el) => el.id));
-      expect(ids).toEqual(['top', 'listen', 'bio', 'press', 'lineup', 'photos', 'technical', 'contact']);
+      expect(ids).toEqual(['top', 'listen', 'bio', 'press', 'lineup', 'photos', 'technical']);
+      await expect(page.locator('main + footer#contact')).toHaveCount(1);
     });
 
     test('the header gives the tagline and the booking email', async ({ page }) => {
@@ -29,6 +30,40 @@ for (const lang of ['fr', 'en'] as const) {
         'src',
         /youtube-nocookie\.com\/embed\/4ll4Ep1TsqI/,
       );
+      // The player is not nested inside a link, and the clip title still links to YouTube.
+      await expect(listen.locator('a iframe')).toHaveCount(0);
+      await expect(listen.locator('a[href="https://www.youtube.com/watch?v=4ll4Ep1TsqI"]')).toBeVisible();
+    });
+
+    test('a modified click on the featured clip is left to the browser', async ({ page }) => {
+      await page.locator('#listen [data-yt-embed]').click({ modifiers: ['ControlOrMeta'] });
+      await expect(page.locator('#listen iframe[src*="youtube"]')).toHaveCount(0);
+    });
+
+    test('keyboard users can skip the top bar', async ({ page }) => {
+      await page.keyboard.press('Tab');
+      await expect(page.locator(':focus')).toHaveAttribute('href', '#main');
+    });
+
+    test('every download link has its own name', async ({ page }) => {
+      const names = await page
+        .locator('#photos a[download]')
+        .evaluateAll((links) => links.map((a) => a.getAttribute('aria-label')));
+      expect(names).toHaveLength(8);
+      expect(new Set(names).size).toBe(8);
+    });
+
+    test('a shared link has a preview image', async ({ page, request }) => {
+      const url = await page.locator('meta[property="og:image"]').getAttribute('content');
+      expect(url).toMatch(/^https:\/\/hilldale\.band\/.+\.jpe?g$/);
+      const response = await request.get(new URL(url!).pathname);
+      expect(response.headers()['content-type']).toBe('image/jpeg');
+    });
+
+    test('the bios are final and the confirmed shows are listed', async ({ page }) => {
+      await expect(page.locator('#bio')).not.toContainText(/DRAFT|BROUILLON/);
+      await expect(page.locator('#press [data-shows] li')).toHaveCount(4);
+      await expect(page.locator('#press [data-shows]')).toContainText('Poum Poum T’chak');
     });
 
     test('the EP can be played on the page', async ({ page }) => {
@@ -77,7 +112,6 @@ for (const lang of ['fr', 'en'] as const) {
       for (const field of ['fans-of', 'set-length', 'photo-credit']) {
         await expect(page.locator(`[data-field="${field}"]`)).toHaveCount(0);
       }
-      await expect(page.locator('#press [data-shows]')).toHaveCount(0);
     });
 
     test('nothing scrolls sideways on a 320 px phone', async ({ page }) => {
@@ -99,6 +133,22 @@ for (const lang of ['fr', 'en'] as const) {
     expect(bytes).toBeLessThan(1_500_000);
   });
 }
+
+test('the English header gives the top quote in English, marked as a translation', async ({ page }) => {
+  await page.goto('/en/');
+  await expect(page.locator('#top [data-facts]')).toContainText('Dark, visceral hardcore');
+  await expect(page.locator('#top [data-facts]')).toContainText('translated from French');
+});
+
+test('search engines are told to stay out while the page is unlisted', async ({ request }) => {
+  expect(await (await request.get('/robots.txt')).text()).toMatch(/^Disallow: \/$/m);
+});
+
+test('a wrong address offers both languages', async ({ page }) => {
+  await page.goto('/404.html');
+  await expect(page.locator('a[href="/fr/"]')).toBeVisible();
+  await expect(page.locator('a[href="/en/"]')).toBeVisible();
+});
 
 test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });

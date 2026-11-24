@@ -15,14 +15,14 @@ const lang = Astro.params.lang as Lang;
 const { shared: s, t } = getContent(lang);
 const hero = s.photos.find((p) => p.file === s.heroPhoto)!;
 const quote = s.press[0];
-const shows = s.shows.filter((show) => show.confirmed);
+const shows = s.shows.filter((show) => show.confirmed).sort((a, b) => b.date.localeCompare(a.date));
 const roles: Record<Role, string> = { vocals: t.roleVocals, guitar: t.roleGuitar, bass: t.roleBass, drums: t.roleDrums };
 const pageUrl = `${s.SITE.url}/${lang}/`;
 const bare = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 const qr = await QRCode.toString(pageUrl, { type: 'svg', margin: 0 });
 ---
 
-<Print lang={lang} title={`HILLDALE · ${t.oneSheet}`}>
+<Print lang={lang} title="HILLDALE · One-sheet">
   <div class="onesheet">
     <div class="bar label">
       <span>{t.pressKit}</span>
@@ -65,9 +65,14 @@ const qr = await QRCode.toString(pageUrl, { type: 'svg', margin: 0 });
         {
           quote && (
             <figure>
-              <blockquote lang="fr">“{quote.quote.fr}”</blockquote>
+              {lang === 'en' && quote.quote.en ? (
+                <blockquote>“{quote.quote.en}”</blockquote>
+              ) : (
+                <blockquote lang="fr">“{quote.quote.fr}”</blockquote>
+              )}
               <figcaption class="label">
                 {quote.source}, {formatDate(quote.date)}
+                {lang === 'en' && quote.quote.en && ` (${t.translated})`}
               </figcaption>
             </figure>
           )

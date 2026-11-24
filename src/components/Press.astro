@@ -7,7 +7,8 @@ interface Props {
 }
 
 const { shared: s, t, lang } = Astro.props.c;
-const shows = s.shows.filter((show) => show.confirmed);
+// Most recent first.
+const shows = s.shows.filter((show) => show.confirmed).sort((a, b) => b.date.localeCompare(a.date));
 ---
 
 {

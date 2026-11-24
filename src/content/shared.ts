@@ -50,10 +50,10 @@ export const shared: Shared = {
   ],
   // Only shows with confirmed: true appear on the page.
   shows: [
-    { date: '2026-10-14', city: 'Limoges', venue: 'Dropkick', with: 'UNSAFE', confirmed: false },
-    { date: '2026-10-15', city: 'Toulouse', venue: 'Mécanique des Fluides', with: 'UNSAFE', confirmed: false },
-    { date: '2026-10-17', city: 'Peyrestortes', venue: 'El Paseo', with: 'UNSAFE', confirmed: false },
-    { date: '2026-11-13', city: 'Nantes', venue: 'Poum Poum T’chak', with: 'Cendres', confirmed: false },
+    { date: '2026-10-14', city: 'Limoges', venue: 'Dropkick', with: 'UNSAFE', confirmed: true },
+    { date: '2026-10-15', city: 'Toulouse', venue: 'Mécanique des Fluides', with: 'UNSAFE', confirmed: true },
+    { date: '2026-10-17', city: 'Peyrestortes', venue: 'El Paseo', with: 'UNSAFE', confirmed: true },
+    { date: '2026-11-13', city: 'Nantes', venue: 'Poum Poum T’chak', with: 'Cendres', confirmed: true },
   ],
   photos: [
     {

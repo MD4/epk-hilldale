@@ -38,6 +38,12 @@ export interface Strings {
   listenWatch: string;
   officialVideo: string;
   playEp: string;
+  skipLink: string;
+  translated: string;
+  creditRecording: string;
+  creditMix: string;
+  creditMaster: string;
+  creditArtwork: string;
   bio: string;
   readMore: string;
   copy: string;

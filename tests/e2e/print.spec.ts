@@ -20,7 +20,13 @@ test('the French one-sheet carries the essentials', async ({ page }) => {
 test('the one-sheet leaves out empty optional content', async ({ page }) => {
   await page.goto('/en/onesheet/');
   await expect(page.locator('[data-field="fans-of"]')).toHaveCount(0);
-  await expect(page.locator('[data-shows]')).toHaveCount(0);
+});
+
+test('the one-sheet lists shows and names itself plainly', async ({ page }) => {
+  await page.goto('/en/onesheet/');
+  await expect(page.locator('[data-shows] li').first()).toBeVisible();
+  await expect(page).toHaveTitle('HILLDALE · One-sheet');
+  await expect(page.locator('main')).toContainText('Dark, visceral hardcore');
 });
 
 test('the English tech rider has the patch list, the stage plot and its date', async ({ page }) => {

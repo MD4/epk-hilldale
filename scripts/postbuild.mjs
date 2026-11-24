@@ -4,12 +4,16 @@
 import { createWriteStream, cpSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ZipArchive } from 'archiver';
+import { isPublishable } from './publishable.mjs';
 
 const downloads = 'dist/downloads';
 const zipPath = join(downloads, 'hilldale-presskit.zip');
 
 for (const folder of ['photos', 'logos']) {
-  cpSync(join('resources', folder), join(downloads, folder), { recursive: true });
+  cpSync(join('resources', folder), join(downloads, folder), {
+    recursive: true,
+    filter: (source) => source === join('resources', folder) || isPublishable(source),
+  });
 }
 
 const zip = new ZipArchive({ store: true });

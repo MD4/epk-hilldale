@@ -63,11 +63,14 @@ const topQuote = s.press[0];
       topQuote && (
         <div class="cell cell--press">
           <p class="label">{t.press}</p>
-          <p class="strong" lang="fr">
-            “{topQuote.quote.fr}”
-          </p>
+          {lang === 'en' && topQuote.quote.en ? (
+            <p class="strong">“{topQuote.quote.en}”</p>
+          ) : (
+            <p class="strong" lang="fr">“{topQuote.quote.fr}”</p>
+          )}
           <p>
             {topQuote.source}, {formatDate(topQuote.date)}
+            {lang === 'en' && topQuote.quote.en && ` (${t.translated})`}
           </p>
         </div>
       )

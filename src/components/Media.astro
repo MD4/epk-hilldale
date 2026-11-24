@@ -10,6 +10,14 @@ const { c } = Astro.props;
 const { shared: s, t } = c;
 const featured = s.videos.find((v) => v.featured)!;
 const others = s.videos.filter((v) => !v.featured);
+const credits = (
+  [
+    [t.creditRecording, s.ep.credits?.recording],
+    [t.creditMix, s.ep.credits?.mix],
+    [t.creditMaster, s.ep.credits?.master],
+    [t.creditArtwork, s.ep.credits?.artwork],
+  ] as const
+).filter(([, who]) => who);
 ---
 
 <section id="listen" class="section wrap">
@@ -42,20 +50,44 @@ const others = s.videos.filter((v) => !v.featured);
       </div>
     )
   }
+
+  {
+    credits.length > 0 && (
+      <p class="credits" data-field="credits">
+        “{s.ep.title}”, EP. {credits.map(([what, who]) => `${what}: ${who}`).join(' · ')}
+      </p>
+    )
+  }
 </section>
 
 <script is:inline>
   // Swap the featured clip's photo for the YouTube player only when the visitor asks for it.
   document.querySelectorAll('a[data-yt-embed]').forEach((link) => {
     link.addEventListener('click', (event) => {
+      // Cmd/ctrl/shift-click and middle-click keep their usual meaning: open YouTube.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
       event.preventDefault();
       const player = document.createElement('iframe');
       player.src = 'https://www.youtube-nocookie.com/embed/' + link.dataset.ytEmbed + '?autoplay=1&rel=0';
       player.title = link.dataset.ytTitle;
       player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
       player.allowFullscreen = true;
-      link.querySelector('.frame').replaceChildren(player);
-    }, { once: true });
+      // A player may not sit inside a link, so the tile becomes a plain box
+      // and only its title bar keeps linking to YouTube.
+      const box = document.createElement('div');
+      const title = document.createElement('a');
+      const frame = link.querySelector('.frame');
+      const bar = link.querySelector('.bar');
+      for (const attr of link.attributes) {
+        if (!['href', 'data-yt-embed', 'data-yt-title'].includes(attr.name)) box.setAttribute(attr.name, attr.value);
+      }
+      for (const attr of bar.attributes) title.setAttribute(attr.name, attr.value);
+      title.href = link.href;
+      title.append(...bar.childNodes);
+      frame.replaceChildren(player);
+      box.append(frame, title);
+      link.replaceWith(box);
+    });
   });
 
   // Same for the Bandcamp player: nothing from Bandcamp loads until the visitor asks.
