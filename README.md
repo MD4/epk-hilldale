@@ -2,7 +2,7 @@
 
 Electronic press kit for HILLDALE, dark hardcore from Nantes, France.
 
-**Live:** https://md4.github.io/epk-hilldale/ (moving to https://hilldale.band)
+**Live:** https://hilldale.band
 
 One page in French and English, plus:
 
@@ -56,15 +56,11 @@ The page shows resized copies; the original is what people download.
 
 Push to `main`. A GitHub Action then runs the tests, rebuilds the site and the PDFs, checks every link and publishes the result. It takes about three minutes; follow it in the repository's **Actions** tab, where it can also be re-run by hand.
 
-### Moving to hilldale.band
+### The domain
 
-The DNS records are already set at OVH. Once the domain resolves:
+`hilldale.band` is registered at OVH. Its DNS points to GitHub Pages (four `A` records `185.199.108–111.153`, four `AAAA` records `2606:50c0:8000–8003::153`, and `www` as a `CNAME` to `md4.github.io`). The domain is set under **Settings › Pages**, with HTTPS enforced.
 
-1. In the repository: **Settings › Pages › Custom domain** → `hilldale.band`.
-2. Tick **Enforce HTTPS** once GitHub offers it.
-3. Re-run the latest **Deploy** workflow, so the pages and PDFs carry the new address.
-
-The old `md4.github.io/epk-hilldale` link then redirects to the new domain. No code change is needed: the workflow asks GitHub where the site is published.
+The workflow asks GitHub where the site is published, so no code names the domain. If it ever changes, update it under **Settings › Pages**, then re-run the **Deploy** workflow so the pages and PDFs carry the new address.
 
 ### Search engines and link previews
 
