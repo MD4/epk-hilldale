@@ -260,9 +260,9 @@ This task needs the owner. Nothing here is invented.
 **Files:**
 - Create: `.github/workflows/deploy.yml`, `public/CNAME`, `README.md`
 
-- [ ] **Step 1: Write the workflow.** Trigger: push to `main` and manual dispatch. One job with `if: github.event.repository.private == false`, steps: checkout, setup-node with npm cache, `npm ci`, `npm run build`, `actions/upload-pages-artifact` on `dist`, then `actions/deploy-pages`. No Playwright install and no tests in the workflow. `public/CNAME` contains `hilldale.band`.
-- [ ] **Step 2: Write `README.md`:** where each piece of content lives, how to add a show or a quote, `npm run pdfs` after any content change, `npm test && npm run test:e2e` before pushing, and how publishing works.
-- [ ] **Step 3: Verify nothing private is tracked:** `git log --all --name-only --format= | sort -u | grep -iE 'private|fiche technique v5|PRÉSENTATION'` prints nothing. Commit.
+- [x] **Step 1: Write the workflow.** Trigger: push to `main` and manual dispatch. One job with `if: github.event.repository.private == false`, steps: checkout, setup-node with npm cache, `npm ci`, `npm run build`, `actions/upload-pages-artifact` on `dist`, then `actions/deploy-pages`. No Playwright install and no tests in the workflow. `public/CNAME` contains `hilldale.band`.
+- [x] **Step 2: Write `README.md`:** where each piece of content lives, how to add a show or a quote, `npm run pdfs` after any content change, `npm test && npm run test:e2e` before pushing, and how publishing works.
+- [x] **Step 3: Verify nothing private is tracked:** `git log --all --name-only --format= | sort -u | grep -iE 'private|fiche technique v5|PRÉSENTATION'` prints nothing. Commit.
 - [ ] **Step 4 (owner go-ahead):** the owner registers `hilldale.band` and sets the DNS records GitHub Pages documents for an apex domain plus `www`.
 - [ ] **Step 5 (owner go-ahead, irreversible):** delete `MD4/epk-hilldale` on GitHub, recreate it as public, push `main`. This is what guarantees the public repo never held the old commit.
 - [ ] **Step 6:** enable Pages with source "GitHub Actions", set the custom domain, enforce HTTPS once the certificate is issued.
