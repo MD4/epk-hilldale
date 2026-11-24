@@ -6,6 +6,7 @@ import { chromium } from '@playwright/test';
 import { serveDist } from './serve-dist.mjs';
 
 const PORT = 4398;
+const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '') + '/';
 const SHEETS = [
   ['fr/onesheet/', 'hilldale-onesheet-fr.pdf'],
   ['en/onesheet/', 'hilldale-onesheet-en.pdf'],
@@ -21,7 +22,7 @@ const browser = await chromium.launch();
 try {
   for (const [route, file] of SHEETS) {
     const page = await browser.newPage();
-    await page.goto(`http://localhost:${PORT}/${route}`, { waitUntil: 'networkidle' });
+    await page.goto(`http://localhost:${PORT}${BASE}${route}`, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
     await page.pdf({ path: `public/downloads/${file}`, format: 'A4', printBackground: true, preferCSSPageSize: true });
     await page.close();

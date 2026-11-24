@@ -24,8 +24,10 @@ const TYPES = {
 };
 
 export function serveDist(port = 4321, root = resolve('dist')) {
+  const base = (process.env.BASE_PATH || '').replace(/\/$/, '');
   const server = createServer((req, res) => {
-    const path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname));
+    let path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname));
+    if (base && path.startsWith(base + '/')) path = path.slice(base.length);
     let file = join(root, path);
     if (!file.startsWith(root)) return res.writeHead(403).end();
     if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');

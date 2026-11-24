@@ -2,7 +2,7 @@ export type Lang = 'fr' | 'en';
 export type Role = 'vocals' | 'guitar' | 'bass' | 'drums';
 
 export interface Shared {
-  SITE: { url: string; indexable: boolean };
+  SITE: { indexable: boolean };
   booking: { name: string; email: string };
   links: Record<'instagram' | 'facebook' | 'bandcamp' | 'spotify' | 'deezer' | 'youtube', string>;
   videos: { id: string; title: string; featured?: true; photo: string }[];

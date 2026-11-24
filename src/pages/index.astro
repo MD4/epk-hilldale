@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { BASE_PATH, href } from '../lib/paths';
 ---
 
 <!doctype html>
@@ -9,16 +10,16 @@ import '../styles/global.css';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HILLDALE</title>
     <meta name="robots" content="noindex" />
-    <script is:inline>
+    <script is:inline define:vars={{ base: BASE_PATH }}>
       // French browsers get the French page, everyone else the English one.
-      location.replace((/^fr\b/i.test(navigator.language) ? '/fr/' : '/en/') + location.hash);
+      location.replace(base + (/^fr\b/i.test(navigator.language) ? 'fr/' : 'en/') + location.hash);
     </script>
   </head>
   <body>
     <main class="wrap">
       <h1>HILLDALE</h1>
-      <p><a href="/fr/" hreflang="fr" lang="fr">Dossier de presse (français)</a></p>
-      <p><a href="/en/" hreflang="en">Press kit (English)</a></p>
+      <p><a href={href('fr/')} hreflang="fr" lang="fr">Dossier de presse (français)</a></p>
+      <p><a href={href('en/')} hreflang="en">Press kit (English)</a></p>
     </main>
   </body>
 </html>

@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { logo, photo } from '../lib/assets';
 import type { Content } from '../lib/content';
+import { href } from '../lib/paths';
 
 interface Props {
   c: Content;
@@ -24,7 +25,7 @@ const { shared: s, t, lang } = Astro.props.c;
               {t.photoCredit}: {p.credit}
             </p>
           )}
-          <a class="btn btn--outline" href={`/downloads/photos/${p.file}`} download aria-label={`${t.download} ${p.file}`}>
+          <a class="btn btn--outline" href={href(`downloads/photos/${p.file}`)} download aria-label={`${t.download} ${p.file}`}>
             {t.download}
           </a>
         </li>
@@ -40,7 +41,7 @@ const { shared: s, t, lang } = Astro.props.c;
           <span class:list={['plate', { 'plate--dark': l.file.includes('white') }]}>
             <Image src={logo(l.file)} alt={l.label[lang]} loading="lazy" />
           </span>
-          <a class="btn btn--outline" href={`/downloads/logos/${l.file}`} download aria-label={`${t.download} ${l.file}`}>
+          <a class="btn btn--outline" href={href(`downloads/logos/${l.file}`)} download aria-label={`${t.download} ${l.file}`}>
             {t.download}
           </a>
         </li>

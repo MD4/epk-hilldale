@@ -5,6 +5,7 @@ import Print from '../../../layouts/Print.astro';
 import { logo, photo } from '../../../lib/assets';
 import { LANGS, getContent, type Lang } from '../../../lib/content';
 import { formatDate } from '../../../lib/format';
+import { absolute } from '../../../lib/paths';
 import { splitShows, todayIso } from '../../../lib/shows';
 import type { Role } from '../../../content/types';
 
@@ -23,7 +24,7 @@ const shows = [
   ...split.past.map((show) => ({ ...show, label: t.showsPast })),
 ].slice(0, 5);
 const roles: Record<Role, string> = { vocals: t.roleVocals, guitar: t.roleGuitar, bass: t.roleBass, drums: t.roleDrums };
-const pageUrl = `${s.SITE.url}/${lang}/`;
+const pageUrl = absolute(`${lang}/`);
 const bare = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 const qr = await QRCode.toString(pageUrl, { type: 'svg', margin: 0 });
 ---

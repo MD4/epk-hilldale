@@ -3,7 +3,8 @@ import type { Shared } from './types';
 // Every fact about the band lives here. Text that changes with language lives in fr.ts and en.ts.
 export const shared: Shared = {
   // Set indexable to true to let search engines list the page.
-  SITE: { url: 'https://hilldale.band', indexable: false },
+  // The public address itself comes from astro.config.mjs.
+  SITE: { indexable: false },
   booking: { name: 'Jojo', email: 'hilldaledowntempo44@gmail.com' },
   links: {
     instagram: 'https://www.instagram.com/hilldale_band/',

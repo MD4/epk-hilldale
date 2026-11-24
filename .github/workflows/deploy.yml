@@ -1,4 +1,4 @@
-# Publishes the site to GitHub Pages on every push to main.
+# Publishes the site to GitHub Pages on every push to main (or by hand from the Actions tab).
 # It does nothing while the repository is private (GitHub Pages needs a public repo on the free plan).
 name: Deploy
 
@@ -25,16 +25,33 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      # Tells the build where the site is published: https://md4.github.io/epk-hilldale/ today,
+      # https://hilldale.band/ as soon as the custom domain is set in Settings > Pages.
+      - id: pages
+        uses: actions/configure-pages@v5
+
       - run: npm ci
-      # The PDFs are generated locally (npm run pdfs) and committed, so no browser is needed here.
-      - run: npm run build
-      - uses: actions/configure-pages@v5
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+
+      - name: Build the site and the PDFs
+        env:
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          npm run pdfs
+          npm run build
+          node scripts/check-links.mjs
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
       - id: deployment
         uses: actions/deploy-pages@v4

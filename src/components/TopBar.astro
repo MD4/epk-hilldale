@@ -1,5 +1,6 @@
 ---
 import { otherLang, type Content } from '../lib/content';
+import { href } from '../lib/paths';
 
 interface Props {
   c: Content;
@@ -14,7 +15,7 @@ const other = otherLang(c.lang);
   <nav aria-label={c.lang === 'fr' ? 'Langue' : 'Language'}>
     <span aria-current="true">{c.lang.toUpperCase()}</span>
     <span aria-hidden="true">/</span>
-    <a href={`/${other}/`} hreflang={other} lang={other} data-lang-toggle aria-label={c.t.otherLangLabel}>
+    <a href={href(`${other}/`)} hreflang={other} lang={other} data-lang-toggle aria-label={c.t.otherLangLabel}>
       {other.toUpperCase()}
     </a>
   </nav>

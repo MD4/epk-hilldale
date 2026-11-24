@@ -1,6 +1,8 @@
 # HILLDALE press kit
 
-The band's electronic press kit: one page in French and English, a one-sheet and a tech sheet as PDFs, and a ZIP with every photo and logo. Published at https://hilldale.band.
+The band's electronic press kit: one page in French and English, a one-sheet and a tech sheet as PDFs, and a ZIP with every photo and logo.
+
+Live at https://md4.github.io/epk-hilldale/ (and at https://hilldale.band once the domain is attached).
 
 ## Setup
 
@@ -45,7 +47,7 @@ npm run pdfs                    # regenerates the one-sheets and tech sheets in 
 npm test && npm run test:e2e    # unit tests, then the browser tests
 ```
 
-Commit the regenerated PDFs together with the content change. The one-sheet's "Upcoming / Past" labels are fixed on the day the PDFs are generated.
+Commit the regenerated PDFs together with the content change. The deploy regenerates them anyway with the live address, so the published PDFs are always current.
 
 ## Preview locally
 
@@ -56,6 +58,26 @@ node scripts/serve-dist.mjs 4400   # then open http://localhost:4400/
 
 ## Publishing
 
-Every push to `main` builds the site and publishes it on GitHub Pages (`.github/workflows/deploy.yml`). The workflow only runs while the repository is public.
+Every push to `main` runs `.github/workflows/deploy.yml`: unit tests, PDFs, build, link check, then GitHub Pages. Follow it in the repository's Actions tab. It can also be run by hand from there ("Run workflow").
+
+The workflow asks GitHub where the site is published and builds for that address, so nothing in the code names it.
+
+### Attaching hilldale.band
+
+1. Buy the domain and add these DNS records at the registrar (check them against GitHub's Pages docs):
+   - `A` records on `@`: 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
+   - `AAAA` records on `@`: 2606:50c0:8000::153, 2606:50c0:8001::153, 2606:50c0:8002::153, 2606:50c0:8003::153
+   - `CNAME` on `www`: md4.github.io
+2. In GitHub: Settings > Pages > Custom domain: `hilldale.band`, then tick "Enforce HTTPS" once it is offered.
+3. Re-run the Deploy workflow from the Actions tab, so the pages and PDFs carry the new address.
+
+### Search engines
 
 The page is hidden from search engines while `SITE.indexable` is `false` in `src/content/shared.ts`. Set it to `true` to let them list it.
+
+### Checking a sub-folder build locally
+
+```sh
+SITE_URL=https://md4.github.io BASE_PATH=/epk-hilldale npm run build
+SITE_URL=https://md4.github.io BASE_PATH=/epk-hilldale node scripts/check-links.mjs
+```

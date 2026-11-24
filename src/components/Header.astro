@@ -3,6 +3,7 @@ import { Image, Picture } from 'astro:assets';
 import { logo, photo } from '../lib/assets';
 import { formatDate } from '../lib/format';
 import type { Content } from '../lib/content';
+import { href } from '../lib/paths';
 
 interface Props {
   c: Content;
@@ -82,7 +83,7 @@ const topQuote = s.press[0];
       <p><a class="email" href={`mailto:${s.booking.email}`}>{s.booking.email}</a></p>
       <div class="actions">
         <a class="btn" href={`mailto:${s.booking.email}`}>{t.bookTheBand}</a>
-        <a class="btn btn--outline" href="/downloads/hilldale-presskit.zip">{t.pressKitZip}</a>
+        <a class="btn btn--outline" href={href('downloads/hilldale-presskit.zip')}>{t.pressKitZip}</a>
       </div>
     </div>
   </div>

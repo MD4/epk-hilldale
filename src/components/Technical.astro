@@ -1,5 +1,6 @@
 ---
 import type { Content } from '../lib/content';
+import { href } from '../lib/paths';
 
 interface Props {
   c: Content;
@@ -25,9 +26,9 @@ const techPdf = lang === 'fr' ? 'hilldale-fiche-technique.pdf' : 'hilldale-tech-
       }
     </ul>
     <div class="actions">
-      <a class="btn" href={`/downloads/${techPdf}`}>{t.techSheet}</a>
-      <a class="btn btn--outline" href={`/downloads/hilldale-onesheet-${lang}.pdf`}>{t.oneSheet}</a>
-      <a class="btn btn--outline" href="/downloads/hilldale-presskit.zip">{t.pressKitZip}</a>
+      <a class="btn" href={href(`downloads/${techPdf}`)}>{t.techSheet}</a>
+      <a class="btn btn--outline" href={href(`downloads/hilldale-onesheet-${lang}.pdf`)}>{t.oneSheet}</a>
+      <a class="btn btn--outline" href={href('downloads/hilldale-presskit.zip')}>{t.pressKitZip}</a>
     </div>
   </div>
 </section>

@@ -7,6 +7,7 @@ import '../styles/global.css';
 import { getImage } from 'astro:assets';
 import { photo } from '../lib/assets';
 import { LANGS, getContent, type Lang } from '../lib/content';
+import { absolute, href } from '../lib/paths';
 
 interface Props {
   lang: Lang;
@@ -21,7 +22,7 @@ const { shared, t } = getContent(lang);
 const { SITE } = shared;
 // The picture shown when the link is pasted into a chat or a social post.
 const preview = await getImage({ src: photo(shared.heroPhoto), width: 1200, format: 'jpeg', quality: 80 });
-const urlFor = (l: Lang) => `${SITE.url}/${l}/${path}`;
+const urlFor = (l: Lang) => absolute(`${l}/${path}`);
 ---
 
 <!doctype html>
@@ -34,10 +35,10 @@ const urlFor = (l: Lang) => `${SITE.url}/${l}/${path}`;
     {!SITE.indexable && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={urlFor(lang)} />
     {LANGS.map((l) => <link rel="alternate" hreflang={l} href={urlFor(l)} />)}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={href('favicon.svg')} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={SITE.url + preview.src} />
+    <meta property="og:image" content={new URL(preview.src, Astro.site).href} />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
