@@ -74,10 +74,8 @@ for (const lang of ['fr', 'en'] as const) {
       await expect(player).toHaveCount(1);
     });
 
-    test('the header facts name the line-up', async ({ page }) => {
-      for (const name of ['Jojo', 'Suli', 'Leo', 'Marty']) {
-        await expect(page.locator('#top [data-facts]')).toContainText(name);
-      }
+    test('the release block in the header does not repeat the line-up', async ({ page }) => {
+      await expect(page.locator('#top .cell--release')).not.toContainText('Suli');
     });
 
     test('no image falls back to a heavy file', async ({ page, request }) => {
